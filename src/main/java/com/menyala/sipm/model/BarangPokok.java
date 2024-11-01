@@ -1,8 +1,6 @@
 package com.menyala.sipm.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,7 +22,11 @@ public class BarangPokok {
 
     private Date kedaluwarsa;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_toko", referencedColumnName = "id")
     private Toko toko;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_jenis_barang", referencedColumnName = "jenis")
+    private JenisBarang jenisBarang;
 }

@@ -1,8 +1,6 @@
 package com.menyala.sipm.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,6 +15,7 @@ public class JadwalPengecekanInfrastruktur {
     @Id
     private UUID id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_infrastruktur", referencedColumnName = "id")
     private Infrastruktur infrastruktur;
 }

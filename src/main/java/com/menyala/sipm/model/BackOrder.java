@@ -1,8 +1,6 @@
 package com.menyala.sipm.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,9 +16,13 @@ public class BackOrder {
     private UUID id;
     private String nama;
     private String jenisBarang;
-    private Integer kuantitas;
-    @ManyToOne
+
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_pasar", referencedColumnName = "id")
     private Pasar pasar;
-    @ManyToOne
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_toko", referencedColumnName = "id")
     private Toko toko;
 }

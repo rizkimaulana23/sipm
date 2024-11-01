@@ -1,8 +1,6 @@
 package com.menyala.sipm.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,9 +23,9 @@ public class Pasar {
 
     private String alamat;
 
-    @OneToMany
+    @OneToMany(mappedBy = "pasar", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Infrastruktur> listInfrastruktur;
 
-    @OneToMany
+    @OneToMany(mappedBy = "pasar", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<BackOrder> listBackOrder;
 }

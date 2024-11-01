@@ -1,9 +1,6 @@
 package com.menyala.sipm.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,12 +26,13 @@ public class Infrastruktur {
 
     private Date tanggalPembangunan;
 
-    @ManyToOne
-    private Toko toko;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_pasar", referencedColumnName = "id")
+    private Pasar pasar;
 
-    @OneToMany
+    @OneToMany(mappedBy = "infrastruktur", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<JadwalMaintenanceInfrastruktur> listJadwalMaintenanceInfrastruktur;
 
-    @OneToMany
+    @OneToMany(mappedBy = "infrastruktur", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<JadwalPengecekanInfrastruktur> listJadwalPengecekanInfrastruktur;
 }

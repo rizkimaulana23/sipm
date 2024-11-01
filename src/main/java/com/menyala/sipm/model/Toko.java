@@ -1,8 +1,6 @@
 package com.menyala.sipm.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,6 +12,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "toko")
 public class Toko {
     @Id
     private UUID id;
@@ -26,9 +25,12 @@ public class Toko {
 
     private String kontakPenjual;
 
-    @OneToMany
+    @OneToMany(mappedBy = "toko", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<BackOrder> listBackOrder;
 
-    @OneToMany
+    @OneToMany(mappedBy = "toko", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<BarangPokok> listBarangPokok;
+
+    @OneToMany(mappedBy = "toko", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<JadwalMaintenanceToko> listJadwalMaintenanceToko;
 }
