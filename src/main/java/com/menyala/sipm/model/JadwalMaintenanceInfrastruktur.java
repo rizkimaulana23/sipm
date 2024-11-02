@@ -18,6 +18,12 @@ public class JadwalMaintenanceInfrastruktur {
 
     private Date tanggalMaintenance;
 
+    private String pelakuMaintenance;
+
+    private String deskripsi;
+
+    private Long biaya;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_infrastruktur", referencedColumnName = "id")
     private Infrastruktur infrastruktur;
