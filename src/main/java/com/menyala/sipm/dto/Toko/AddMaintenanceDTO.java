@@ -13,4 +13,5 @@ public class AddMaintenanceDTO {
     private Date tanggal;
     private String deskripsiMaintenance;
     private String pelakuMaintenance;
+    private Long biayaMaintenance;
 }

@@ -1,17 +1,13 @@
 package com.menyala.sipm.service;
 
+import com.menyala.sipm.dto.BarangPokok.AddBackOrderDTO;
 import com.menyala.sipm.dto.BarangPokok.AddBarangPokokDTO;
-import com.menyala.sipm.dto.BarangPokok.AddJenisBarangDTO;
-import com.menyala.sipm.dto.Toko.AddMaintenanceDTO;
 import com.menyala.sipm.model.*;
-import com.menyala.sipm.repository.BarangPokokRepo;
-import com.menyala.sipm.repository.JenisBarangRepo;
-import com.menyala.sipm.repository.TokoRepo;
+import com.menyala.sipm.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 public class BarangPokokImpl implements BarangPokokService  {
@@ -34,6 +30,11 @@ public class BarangPokokImpl implements BarangPokokService  {
     @Autowired
     JenisBarangRepo jenisBarangRepo;
 
+    @Autowired
+    PasarRepo pasarRepo;
+
+    @Autowired
+    BackOrderRepo backOrderRepo;
 
     @Override
     public List<String> getJenisBp() {
@@ -55,18 +56,16 @@ public class BarangPokokImpl implements BarangPokokService  {
     @Override
     public BarangPokok create(AddBarangPokokDTO dto) {
         BarangPokok barangPokok = new BarangPokok();
-        barangPokok.setId(UUID.randomUUID());  // Generate a new ID
+        barangPokok.setId(UUID.randomUUID());
         barangPokok.setNama(dto.getNama());
         barangPokok.setStok(dto.getStok());
-        barangPokok.setTotalPenjual(dto.getTotalPenjual()); // Update the method to match DTO
+        barangPokok.setTotalPenjual(dto.getTotalPenjual());
         barangPokok.setTanggalKadaluarsa(dto.getTanggalKadaluwarsa());
 
-        // Set JenisBarang if needed
-        jenisBarang = jenisBarangRepo.findById(dto.getIdJenisBarang());
+        JenisBarang jenisBarang = jenisBarangRepo.findById(dto.getIdJenisBarang()).orElse(null);
 
         barangPokok.setJenisBarang(jenisBarang);
 
-        // Handle listToko
         List<Toko> listToko = new ArrayList<>();
         for (UUID tokoId : dto.getListIdToko()) {
             Toko toko = tokoRepo.findById(tokoId).orElseThrow(() ->
@@ -75,7 +74,32 @@ public class BarangPokokImpl implements BarangPokokService  {
         }
         barangPokok.setListToko(listToko);
 
-        return barangPokokRepo.save(barangPokok); // Ensure the repo is correctly referenced
+        return barangPokokRepo.save(barangPokok);
     }
+
+    @Override
+    public BackOrder createBackOrder(AddBackOrderDTO dto) {
+        BackOrder backOrder = new BackOrder();
+        backOrder.setId(UUID.randomUUID());
+        backOrder.setNama(dto.getNama());
+
+        JenisBarang jenisBarang = jenisBarangRepo.findById(dto.getIdJenisBarang())
+                .orElseThrow(() -> new IllegalArgumentException("JenisBarang not found with ID: " + dto.getIdJenisBarang()));
+        backOrder.setJenisBarang(jenisBarang);
+
+        Pasar pasar = pasarRepo.findById(dto.getIdPasar())
+                .orElseThrow(() -> new IllegalArgumentException("Pasar not found with ID: " + dto.getIdPasar()));
+        backOrder.setPasar(pasar);
+
+        Toko toko = tokoRepo.findById(dto.getIdToko())
+                .orElseThrow(() -> new IllegalArgumentException("Toko not found with ID: " + dto.getIdToko()));
+        backOrder.setToko(toko);
+
+        return backOrderRepo.save(backOrder);
+    }
+
+
+
+
 
 }

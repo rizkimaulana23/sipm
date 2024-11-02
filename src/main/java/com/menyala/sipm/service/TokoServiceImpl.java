@@ -4,11 +4,13 @@ import com.menyala.sipm.dto.BarangPokok.AddBarangPokokDTO;
 import com.menyala.sipm.dto.BarangPokok.AddJenisBarangDTO;
 import com.menyala.sipm.dto.Toko.AddMaintenanceDTO;
 import com.menyala.sipm.dto.Toko.AddTokoDTO;
+import com.menyala.sipm.dto.Toko.AddTransaksiDTO;
 import com.menyala.sipm.model.*;
 import com.menyala.sipm.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,7 +23,7 @@ public class TokoServiceImpl implements TokoService{
     private PasarRepo pasarRepo;
 
     @Autowired
-    private JadwalMaintenanceTokoRepo jadwalMaintenanceInfrastrukturRepo;
+    private JadwalMaintenanceTokoRepo jadwalMaintenanceRepo;
 
     @Autowired
     private BarangPokok barangPokok;
@@ -41,39 +43,50 @@ public class TokoServiceImpl implements TokoService{
 
 
     @Override
-    public Toko create(AddTokoDTO dto) {
+    public Toko createToko(AddTokoDTO dto) {
         Toko toko = new Toko();
-        toko.setId(UUID.randomUUID());  // Generate a new ID
+        toko.setId(UUID.randomUUID());
         toko.setNamaToko(dto.getNamaToko());
         toko.setAlamatToko(dto.getAlamatToko());
         toko.setNikPenjual(dto.getNikPenjual());
         toko.setKontakPenjual(dto.getKontakPenjual());
 
-        // Set Pasar entity from the repository
         Pasar pasar = pasarRepo.findById(dto.getIdPasar()).orElseThrow(() ->
                 new IllegalArgumentException("Pasar not found with ID: " + dto.getIdPasar()));
         toko.setPasar(pasar);
 
-        // Handle listBarangPokok if needed (to be implemented)
-        // You may need to convert listIdBarangPokok to a List<BarangPokok> and set it in Toko
+        pasar.getListToko().add(toko);
 
         return tokoRepo.save(toko);
     }
 
-
-
-
-
+    @Override
+    public Transaksi createTransaksi(AddTransaksiDTO dto){
+        Transaksi transaksi = new Transaksi();
+        transaksi.setIdTransaksi(UUID.randomUUID());
+        transaksi.setPendapatanHarian(dto.getPendapatanHarian());
+        transaksi.setToko(tokoRepo.findById(dto.getIdToko()).orElse(null));
+        transaksi.setPendapatanHarian(dto.getPendapatanHarian());
+        return transaksiRepo.save(transaksi);
+    };
 
     @Override
     public JadwalMaintenanceToko addMaintenance(AddMaintenanceDTO dto){
-
+        JadwalMaintenanceToko jadwalMaintenanceToko = new JadwalMaintenanceToko();
+        jadwalMaintenanceToko.setId(UUID.randomUUID());
+        jadwalMaintenanceToko.setDeskripsi(dto.getDeskripsiMaintenance());
+        jadwalMaintenanceToko.setPihakMaintenance(dto.getPelakuMaintenance());
+        jadwalMaintenanceToko.setBiayaMaintenance(dto.getBiayaMaintenance());
+        jadwalMaintenanceToko.setTanggal(dto.getTanggal());
+        Toko toko = tokoRepo.findById(dto.getIdToko()).orElse(null);
+        jadwalMaintenanceToko.setToko(toko);
+        if (toko.getListJadwalMaintenanceToko() == null) {
+            toko.setListJadwalMaintenanceToko(new ArrayList<>());
+        }
+        toko.getListJadwalMaintenanceToko().add(jadwalMaintenanceToko);
+        return jadwalMaintenanceRepo.save(jadwalMaintenanceToko);
     };
 
-    @Override
-    public JenisBarang addJenisBarang(AddJenisBarangDTO dto){
-
-    };
 
 
 
