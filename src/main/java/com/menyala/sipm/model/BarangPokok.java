@@ -4,14 +4,17 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@Table
 public class BarangPokok {
     @Id
     private UUID id;
@@ -19,12 +22,18 @@ public class BarangPokok {
     private String nama;
 
     private Integer stok;
+    private Integer total_penjual;
 
     private Date kedaluwarsa;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_toko", referencedColumnName = "id")
-    private Toko toko;
+    @ManyToMany
+    @JoinTable(
+            name = "barangDiToko",
+            joinColumns = @JoinColumn(name = "id"),
+            inverseJoinColumns = @JoinColumn(name = "id_toko")
+    )
+    List<Toko> listToko;
+
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_jenis_barang", referencedColumnName = "jenis")

@@ -1,64 +1,53 @@
 package com.menyala.sipm.service;
 
-import com.menyala.sipm.dto.infrastruktur.AddInfrastrukturDTO;
+import com.menyala.sipm.dto.Toko.AddBarangPokokDTO;
+import com.menyala.sipm.dto.Toko.AddMaintenanceDTO;
+import com.menyala.sipm.dto.Toko.AddTokoDTO;
 import com.menyala.sipm.dto.infrastruktur.AddMaintenanceInfrastrukturDTO;
 import com.menyala.sipm.dto.infrastruktur.AddPengecekanInfrastrukturDTO;
-import com.menyala.sipm.model.Infrastruktur;
-import com.menyala.sipm.model.JadwalMaintenanceInfrastruktur;
-import com.menyala.sipm.model.JadwalPengecekanInfrastruktur;
-import com.menyala.sipm.repository.InfrastrukturRepo;
-import com.menyala.sipm.repository.JadwalMaintenanceInfrastrukturRepo;
-import com.menyala.sipm.repository.JadwalPengecekanInfrastrukturRepo;
-import com.menyala.sipm.repository.PasarRepo;
+import com.menyala.sipm.model.*;
+import com.menyala.sipm.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 
-@Service
-public class InfrastrukturServiceImpl implements InfrastrukturService {
+public class TokoServiceImpl implements TokoService{
 
     @Autowired
-    private InfrastrukturRepo infrastrukturRepo;
+    private TokoRepo infrastrukturRepo;
 
     @Autowired
     private PasarRepo pasarRepo;
 
     @Autowired
-    private JadwalMaintenanceInfrastrukturRepo jadwalMaintenanceInfrastrukturRepo;
+    private JadwalMaintenanceTokoRepo jadwalMaintenanceInfrastrukturRepo;
 
     @Autowired
-    private JadwalPengecekanInfrastrukturRepo jadwalPengecekanInfrastrukturRepo;
+    private BarangPokok barangPokok;
+
+    @Autowired
+    private TransaksiRepo transaksiRepo;
 
     @Override
-    public List<String> getJenis() {
+    public List<String> getJenisBp() {
         return List.of(
-                "kantor-pengelola",
-                "ruang-serbaguna",
-                "toilet",
-                "tempat-ibadah",
-                "papan-informasi",
-                "pos-ukur-ulang",
-                "sarana-kesehatan",
-                "pos-keamanan",
-                "drainease",
-                "akses-transportasi",
-                "tps-sementara",
-                "gudang",
-                "area-bongkar-muat",
-                "tempat-parkir",
-                "area-penghijauan",
-                "hidran",
-                "instalasi-air-listrik",
-                "telokomunikasi",
-                "si-harga-stok",
-                "papan-harga-harian"
+                "beras",
+                "kedelai",
+                "cabe",
+                "bawang-merah",
+                "Gula",
+                "Minyak-Goreng",
+                "Tepung-Terigu",
+                "Daging-Sapi",
+                "Daging-Ayam-Ras",
+                "Telur-Ayam-Ras",
+                "Ikan-Segar"
         );
     }
 
     @Override
-    public Infrastruktur create(AddInfrastrukturDTO dto) {
+    public Toko create(AddBarangPokokDTO dto) {
         Infrastruktur infrastruktur = new Infrastruktur();
         infrastruktur.setId(UUID.randomUUID());
         infrastruktur.setNamaInfrastruktur(dto.getNama());
@@ -70,7 +59,7 @@ public class InfrastrukturServiceImpl implements InfrastrukturService {
     }
 
     @Override
-    public JadwalMaintenanceInfrastruktur addMaintenance(AddMaintenanceInfrastrukturDTO dto) {
+    public JadwalMaintenanceToko addMaintenance(AddMaintenanceDTO dto) {
         JadwalMaintenanceInfrastruktur jadwal = new JadwalMaintenanceInfrastruktur();
         jadwal.setId(UUID.randomUUID());
         jadwal.setInfrastruktur(infrastrukturRepo.findById(dto.getInfrastrukturID()).orElse(null));
@@ -82,7 +71,7 @@ public class InfrastrukturServiceImpl implements InfrastrukturService {
     }
 
     @Override
-    public JadwalPengecekanInfrastruktur addPengecekan(AddPengecekanInfrastrukturDTO dto) {
+    public tambahTokoDTO addToko(AddTokoDTO dto) {
         JadwalPengecekanInfrastruktur jadwal = new JadwalPengecekanInfrastruktur();
         jadwal.setId(UUID.randomUUID());
         jadwal.setInfrastruktur(infrastrukturRepo.findById(dto.getInfrastrukturID()).orElse(null));

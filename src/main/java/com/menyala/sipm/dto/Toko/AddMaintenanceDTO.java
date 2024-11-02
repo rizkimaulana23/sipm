@@ -1,4 +1,4 @@
-package com.menyala.sipm.dto.infrastruktur;
+package com.menyala.sipm.dto.Toko;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,9 +9,8 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 public class AddMaintenanceDTO {
-    private UUID infrastrukturID;
+    private UUID idToko;
     private Date tanggal;
-    private String deskripsi;
+    private String deskripsiMaintenance;
     private String pelakuMaintenance;
-    private Long biaya;
 }
