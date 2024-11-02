@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -14,4 +15,5 @@ public class AddInfrastrukturDTO {
     private Date tanggalPembangunan;
     private Date tanggalTerakhirKaliPengecekan;
     private String foto;
+    private UUID idPasar;
 }

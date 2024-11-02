@@ -1,7 +1,9 @@
 package com.menyala.sipm;
 
 import com.github.javafaker.Faker;
+import com.menyala.sipm.dto.infrastruktur.AddInfrastrukturDTO;
 import com.menyala.sipm.dto.pasar.CreatePasarDTO;
+import com.menyala.sipm.model.Pasar;
 import com.menyala.sipm.service.InfrastrukturService;
 import com.menyala.sipm.service.PasarService;
 import org.springframework.boot.CommandLineRunner;
@@ -10,6 +12,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
@@ -36,7 +41,22 @@ public class SipmApplication {
 				createPasarDTO.setNama("Pasar " + location);
 				createPasarDTO.setRetribusi(retributionGenerator());
 				createPasarDTO.setAlamat(faker.address().fullAddress());
-				pasarService.create(createPasarDTO);
+				Pasar pasar = pasarService.create(createPasarDTO);
+
+				List<String> jenisInfrastruktur = infrastrukturService.getJenis();
+				for (String jenis : jenisInfrastruktur) {
+					AddInfrastrukturDTO addInfrastrukturDTO =  new AddInfrastrukturDTO();
+					addInfrastrukturDTO.setJenis(jenis);
+					addInfrastrukturDTO.setNama(jenis + " " + pasar.getNama());
+					addInfrastrukturDTO.setPenanggungJawab(faker.name().fullName());
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+					Date fromDate = sdf.parse("2023-01-01");
+					Date toDate = sdf.parse("2023-12-31");
+					addInfrastrukturDTO.setTanggalPembangunan(faker.date().between(fromDate, toDate));
+					addInfrastrukturDTO.setTanggalTerakhirKaliPengecekan(faker.date().between(fromDate, toDate));
+					addInfrastrukturDTO.setIdPasar(pasar.getId());
+					infrastrukturService.create(addInfrastrukturDTO);
+				}
 			}
 		};
 	}
