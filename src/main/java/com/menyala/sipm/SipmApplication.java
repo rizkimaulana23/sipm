@@ -9,4 +9,5 @@ public class SipmApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SipmApplication.class, args);
 	}
+
 }
