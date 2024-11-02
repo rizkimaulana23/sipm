@@ -20,5 +20,4 @@ public class AddTokoDTO {
     private UUID idPasar;  // Reference to the Pasar entity
     private List<UUID> listIdBarangPokok;  // Assuming this will be used to link to BarangPokok entities
     // Add any other relevant fields if necessary
-
 }

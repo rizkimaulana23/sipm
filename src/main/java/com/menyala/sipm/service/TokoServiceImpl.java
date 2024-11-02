@@ -86,13 +86,4 @@ public class TokoServiceImpl implements TokoService{
         toko.getListJadwalMaintenanceToko().add(jadwalMaintenanceToko);
         return jadwalMaintenanceRepo.save(jadwalMaintenanceToko);
     };
-
-
-
-
-
-
-
-
-
 }
