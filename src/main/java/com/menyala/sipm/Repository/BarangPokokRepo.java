@@ -1,6 +1,5 @@
 package com.menyala.sipm.Repository;
 
-
 import com.menyala.sipm.model.BarangPokok;
 import org.springframework.data.jpa.repository.JpaRepository;
 
