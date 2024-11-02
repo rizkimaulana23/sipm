@@ -1,7 +1,6 @@
-package com.menyala.sipm.dto.Toko;
+package com.menyala.sipm.dto.BarangPokok;
 
 
-import com.menyala.sipm.model.Toko;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

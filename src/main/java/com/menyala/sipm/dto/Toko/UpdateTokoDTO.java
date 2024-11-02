@@ -8,6 +8,6 @@ import java.util.UUID;
 
 @Data
 @NoArgsConstructor
-public class UpdateTableDTO extends AddTokoDTO {
+public class UpdateTokoDTO extends AddTokoDTO {
     private UUID id;
 }
