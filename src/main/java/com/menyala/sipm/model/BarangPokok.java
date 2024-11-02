@@ -22,9 +22,9 @@ public class BarangPokok {
     private String nama;
 
     private Integer stok;
-    private Integer total_penjual;
+    private Integer totalPenjual;
 
-    private Date kedaluwarsa;
+    private Date tanggalKadaluarsa;
 
     @ManyToMany
     @JoinTable(

@@ -31,7 +31,6 @@ public class Toko {
     @ManyToMany(mappedBy = "listToko", fetch = FetchType.LAZY)
     private List<BarangPokok> listBarangPokok;
 
-
     @OneToMany(mappedBy = "toko", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<JadwalMaintenanceToko> listJadwalMaintenanceToko;
 

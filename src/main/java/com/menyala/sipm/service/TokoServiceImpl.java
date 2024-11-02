@@ -1,6 +1,7 @@
 package com.menyala.sipm.service;
 
 import com.menyala.sipm.dto.Toko.AddBarangPokokDTO;
+import com.menyala.sipm.dto.Toko.AddJenisBarangDTO;
 import com.menyala.sipm.dto.Toko.AddMaintenanceDTO;
 import com.menyala.sipm.dto.Toko.AddTokoDTO;
 import com.menyala.sipm.dto.infrastruktur.AddMaintenanceInfrastrukturDTO;
@@ -9,13 +10,14 @@ import com.menyala.sipm.model.*;
 import com.menyala.sipm.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 public class TokoServiceImpl implements TokoService{
 
     @Autowired
-    private TokoRepo infrastrukturRepo;
+    private TokoRepo tokoRepo;
 
     @Autowired
     private PasarRepo pasarRepo;
@@ -27,7 +29,17 @@ public class TokoServiceImpl implements TokoService{
     private BarangPokok barangPokok;
 
     @Autowired
+    private JenisBarang jenisBarang;
+
+    @Autowired
+    private BarangPokokRepo barangPokokRepo;
+
+
+    @Autowired
     private TransaksiRepo transaksiRepo;
+
+    @Autowired
+    private JenisBarangRepo jenisBarangRepo;
 
     @Override
     public List<String> getJenisBp() {
@@ -47,37 +59,69 @@ public class TokoServiceImpl implements TokoService{
     }
 
     @Override
-    public Toko create(AddBarangPokokDTO dto) {
-        Infrastruktur infrastruktur = new Infrastruktur();
-        infrastruktur.setId(UUID.randomUUID());
-        infrastruktur.setNamaInfrastruktur(dto.getNama());
-        infrastruktur.setJenis(dto.getJenis());
-        infrastruktur.setPenanggungJawab(dto.getPenanggungJawab());
-        infrastruktur.setTanggalPembangunan(dto.getTanggalPembangunan());
-        infrastruktur.setPasar(pasarRepo.findById(dto.getIdPasar()).orElse(null));
-        return infrastrukturRepo.save(infrastruktur);
+    public Toko create(AddTokoDTO dto) {
+        Toko toko = new Toko();
+        toko.setId(UUID.randomUUID());  // Generate a new ID
+        toko.setNamaToko(dto.getNamaToko());
+        toko.setAlamatToko(dto.getAlamatToko());
+        toko.setNikPenjual(dto.getNikPenjual());
+        toko.setKontakPenjual(dto.getKontakPenjual());
+
+        // Set Pasar entity from the repository
+        Pasar pasar = pasarRepo.findById(dto.getIdPasar()).orElseThrow(() ->
+                new IllegalArgumentException("Pasar not found with ID: " + dto.getIdPasar()));
+        toko.setPasar(pasar);
+
+        // Handle listBarangPokok if needed (to be implemented)
+        // You may need to convert listIdBarangPokok to a List<BarangPokok> and set it in Toko
+
+        return tokoRepo.save(toko);
     }
 
-    @Override
-    public JadwalMaintenanceToko addMaintenance(AddMaintenanceDTO dto) {
-        JadwalMaintenanceInfrastruktur jadwal = new JadwalMaintenanceInfrastruktur();
-        jadwal.setId(UUID.randomUUID());
-        jadwal.setInfrastruktur(infrastrukturRepo.findById(dto.getInfrastrukturID()).orElse(null));
-        jadwal.setTanggalMaintenance(dto.getTanggal());
-        jadwal.setPelakuMaintenance(dto.getPelakuMaintenance());
-        jadwal.setBiaya(dto.getBiaya());
-        jadwal.setDeskripsi(dto.getDeskripsi());
-        return jadwalMaintenanceInfrastrukturRepo.save(jadwal);
-    }
+
 
     @Override
-    public tambahTokoDTO addToko(AddTokoDTO dto) {
-        JadwalPengecekanInfrastruktur jadwal = new JadwalPengecekanInfrastruktur();
-        jadwal.setId(UUID.randomUUID());
-        jadwal.setInfrastruktur(infrastrukturRepo.findById(dto.getInfrastrukturID()).orElse(null));
-        jadwal.setTanggal(dto.getTanggal());
-        jadwal.setBiaya(dto.getBiaya());
-        jadwal.setPelakuPengecekan(dto.getPelakuPengecekan());
-        return jadwalPengecekanInfrastrukturRepo.save(jadwal);
+    public BarangPokok create(AddBarangPokokDTO dto) {
+        BarangPokok barangPokok = new BarangPokok();
+        barangPokok.setId(UUID.randomUUID());  // Generate a new ID
+        barangPokok.setNama(dto.getNama());
+        barangPokok.setStok(dto.getStok());
+        barangPokok.setTotalPenjual(dto.getTotalPenjual()); // Update the method to match DTO
+        barangPokok.setTanggalKadaluarsa(dto.getTanggalKadaluwarsa());
+
+        // Set JenisBarang if needed
+        JenisBarang jenisBarang = jenisBarangRepo.findById(dto.getIdJenisBarang());
+
+        barangPokok.setJenisBarang(jenisBarang);
+
+        // Handle listToko
+        List<Toko> listToko = new ArrayList<>();
+        for (UUID tokoId : dto.getListIdToko()) {
+            Toko toko = tokoRepo.findById(tokoId).orElseThrow(() ->
+                    new IllegalArgumentException("Toko not found with ID: " + tokoId));
+            listToko.add(toko);
+        }
+        barangPokok.setListToko(listToko);
+
+        return barangPokokRepo.save(barangPokok); // Ensure the repo is correctly referenced
     }
+
+
+    @Override
+    public JadwalMaintenanceToko addMaintenance(AddMaintenanceDTO dto){
+
+    };
+
+    @Override
+    public JenisBarang addJenisBarang(AddJenisBarangDTO dto){
+
+    };
+
+
+
+
+
+
+
+
 }

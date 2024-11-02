@@ -11,11 +11,14 @@ import java.util.UUID;
 @NoArgsConstructor
 public class AddTokoDTO {
 
-    private List<UUID> listIdBarangPokok;
+    private UUID id;  // Optionally, you might want to set the ID when creating a new Toko.
     private String namaToko;
     private String alamatToko;
     private String nikPenjual;
     private String namaPenjual;
     private String kontakPenjual;
+    private UUID idPasar;  // Reference to the Pasar entity
+    private List<UUID> listIdBarangPokok;  // Assuming this will be used to link to BarangPokok entities
+    // Add any other relevant fields if necessary
 
 }
