@@ -1,6 +1,5 @@
-package com.menyala.sipm.Repository;
+package com.menyala.sipm.repository;
 
-import com.menyala.sipm.model.BackOrder;
 import com.menyala.sipm.model.JadwalMaintenanceInfrastruktur;
 import org.springframework.data.jpa.repository.JpaRepository;
 
