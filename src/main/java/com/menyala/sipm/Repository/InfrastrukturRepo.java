@@ -1,9 +1,9 @@
-package com.menyala.sipm.Repository;
+package com.menyala.sipm.repository;
 
-import com.menyala.sipm.model.BackOrder;
+import com.menyala.sipm.model.Infrastruktur;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;
 
-public interface InfrastrukturRepo extends JpaRepository<BackOrder, UUID> {
+public interface InfrastrukturRepo extends JpaRepository<Infrastruktur, UUID> {
 }
