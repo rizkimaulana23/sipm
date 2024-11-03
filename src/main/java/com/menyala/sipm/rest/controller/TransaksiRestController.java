@@ -79,4 +79,24 @@ public class TransaksiRestController {
             return new ResponseEntity<>(failedBaseResponse, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/toko/{id}")
+    public ResponseEntity<?> lineTransaksiToko(@PathVariable("id")UUID id) {
+        try {
+            LineTransaksiTokoResponseDTO responseDTO = transaksiRestService.lineTransaksiToko(id);
+            var successBaseResponse = new SuccessBaseResponseDTO<LineTransaksiTokoResponseDTO>();
+            successBaseResponse.setMessage("Data berhasil diambil");
+            successBaseResponse.setStatus(HttpStatus.OK.value());
+            successBaseResponse.setData(responseDTO);
+            return new ResponseEntity<>(successBaseResponse, HttpStatus.OK);
+        } catch (Exception e) {
+            var failedBaseResponse = new FailedBaseResponseDTO<String>();
+            failedBaseResponse.setMessage(e.getMessage());
+            failedBaseResponse.setTimestamp(new Date());
+            failedBaseResponse.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            failedBaseResponse.setError(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
+            failedBaseResponse.setData("Terjadi kesalahan pada toko tersebut");
+            return new ResponseEntity<>(failedBaseResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
