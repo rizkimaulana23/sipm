@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -19,12 +20,18 @@ public class BarangPokok {
     private String nama;
 
     private Integer stok;
+    private Integer totalPenjual;
 
-    private Date kedaluwarsa;
+    private Date tanggalKadaluarsa;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_toko", referencedColumnName = "id")
-    private Toko toko;
+    @ManyToMany
+    @JoinTable(
+            name = "barangDiToko",
+            joinColumns = @JoinColumn(name = "id"),
+            inverseJoinColumns = @JoinColumn(name = "id_toko")
+    )
+    List<Toko> listToko;
+
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_jenis_barang", referencedColumnName = "jenis")

@@ -26,6 +26,10 @@ public class JadwalMaintenanceToko {
     @NotNull
     private String pihakMaintenance;
 
+    @NotNull
+    private Long biayaMaintenance;
+
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_toko", referencedColumnName = "id")
     private Toko toko;

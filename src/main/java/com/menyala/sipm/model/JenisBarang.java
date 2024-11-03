@@ -19,4 +19,7 @@ public class JenisBarang {
 
     @OneToMany(mappedBy = "jenisBarang", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<BarangPokok> listBarangPokok;
+
+    @OneToMany(mappedBy = "jenisBarang", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<BackOrder> listBackOrder;
 }

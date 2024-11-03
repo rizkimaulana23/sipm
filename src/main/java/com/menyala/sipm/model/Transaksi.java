@@ -8,21 +8,20 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 import java.util.UUID;
 
+
+
 @Entity
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-public class JadwalPengecekanInfrastruktur {
+public class Transaksi {
     @Id
-    private UUID id;
-
-    private Date tanggal;
-
-    private String pelakuPengecekan;
-
-    private Long biaya;
+    private UUID idTransaksi;
+    private Long pendapatanHarian;
+    private Date tanggalTransaksi;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_infrastruktur", referencedColumnName = "id")
-    private Infrastruktur infrastruktur;
+    @JoinColumn(name = "id_toko", referencedColumnName = "id")
+    private Toko toko;
+
 }

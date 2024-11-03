@@ -28,4 +28,9 @@ public class Pasar {
 
     @OneToMany(mappedBy = "pasar", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<BackOrder> listBackOrder;
+
+    @OneToMany(mappedBy = "pasar", cascade = CascadeType.ALL)
+    private List<Toko> listToko;
+
+
 }

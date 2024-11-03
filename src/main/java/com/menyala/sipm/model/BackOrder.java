@@ -15,7 +15,7 @@ public class BackOrder {
     @Id
     private UUID id;
     private String nama;
-    private String jenisBarang;
+
 
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -25,4 +25,9 @@ public class BackOrder {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_toko", referencedColumnName = "id")
     private Toko toko;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "jenis", referencedColumnName = "jenis")
+    private JenisBarang jenisBarang;
+
 }
