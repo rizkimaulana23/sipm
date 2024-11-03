@@ -40,5 +40,4 @@ public class Toko {
 
     @OneToMany(mappedBy = "toko", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Transaksi> listTransaksi;
-
 }
