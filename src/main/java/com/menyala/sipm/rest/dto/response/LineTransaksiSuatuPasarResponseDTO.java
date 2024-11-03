@@ -7,7 +7,8 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-public class LineTransaksiSemuaPasarResponseDTO {
-    private List<String> labels;
+public class LineTransaksiSuatuPasarResponseDTO {
+    private String namaPasar;
     private List<Integer> data;
+    private List<String> labels;
 }

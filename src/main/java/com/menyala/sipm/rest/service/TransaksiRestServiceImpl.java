@@ -2,7 +2,10 @@ package com.menyala.sipm.rest.service;
 
 import com.menyala.sipm.rest.dto.response.BarTransaksiLokasiResponseDTO;
 import com.menyala.sipm.rest.dto.response.LineTransaksiSemuaPasarResponseDTO;
+import com.menyala.sipm.rest.dto.response.LineTransaksiSuatuPasarResponseDTO;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 @Service
 public class TransaksiRestServiceImpl implements TransaksiRestService {
@@ -15,6 +18,12 @@ public class TransaksiRestServiceImpl implements TransaksiRestService {
     @Override
     public LineTransaksiSemuaPasarResponseDTO lineTransaksiSemuaPasar() {
         LineTransaksiSemuaPasarResponseDTO response = new LineTransaksiSemuaPasarResponseDTO();
+        return response;
+    }
+
+    @Override
+    public LineTransaksiSuatuPasarResponseDTO lineTransaksiSuatuPasar(UUID id) {
+        LineTransaksiSuatuPasarResponseDTO response = new LineTransaksiSuatuPasarResponseDTO();
         return response;
     }
 }
