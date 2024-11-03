@@ -27,7 +27,7 @@ public class BackOrder {
     private Toko toko;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "jenis", referencedColumnName = "id")
+    @JoinColumn(name = "jenis", referencedColumnName = "jenis")
     private JenisBarang jenisBarang;
 
 }
