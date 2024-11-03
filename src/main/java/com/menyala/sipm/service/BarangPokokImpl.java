@@ -2,6 +2,7 @@ package com.menyala.sipm.service;
 
 import com.menyala.sipm.dto.BarangPokok.AddBackOrderDTO;
 import com.menyala.sipm.dto.BarangPokok.AddBarangPokokDTO;
+import com.menyala.sipm.dto.BarangPokok.AddJenisBarangDTO;
 import com.menyala.sipm.model.*;
 import com.menyala.sipm.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +53,14 @@ public class BarangPokokImpl implements BarangPokokService  {
                 "Ikan-Segar"
         );
     }
+
+    @Override
+    public JenisBarang createJenisBarang(AddJenisBarangDTO dto){
+        JenisBarang jenisBarang1 = new JenisBarang();
+        jenisBarang1.setJenis(dto.getJenis());
+        return jenisBarangRepo.save(jenisBarang1);
+    }
+
 
     @Override
     public BarangPokok create(AddBarangPokokDTO dto) {
