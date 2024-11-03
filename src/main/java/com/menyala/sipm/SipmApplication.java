@@ -11,8 +11,12 @@ import com.menyala.sipm.dto.infrastruktur.AddInfrastrukturDTO;
 import com.menyala.sipm.dto.infrastruktur.AddMaintenanceInfrastrukturDTO;
 import com.menyala.sipm.dto.infrastruktur.AddPengecekanInfrastrukturDTO;
 import com.menyala.sipm.dto.pasar.CreatePasarDTO;
-import com.menyala.sipm.model.*;
+import com.menyala.sipm.model.Infrastruktur;
+import com.menyala.sipm.model.JenisBarang;
+import com.menyala.sipm.model.Pasar;
+import com.menyala.sipm.model.Toko;
 import com.menyala.sipm.service.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -21,9 +25,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 @SpringBootApplication
+@Slf4j
 public class SipmApplication {
 
 	public static void main(String[] args) {
@@ -34,7 +38,7 @@ public class SipmApplication {
 	@Transactional
 	CommandLineRunner run(PasarService pasarService, InfrastrukturService infrastrukturService, BarangPokokService barangPokokService, TokoService tokoService) {
 		return args -> {
-			for (int i = 0; i < 100; i++) {
+			for (int i = 0; i < 10; i++) {
 
 				var faker = new Faker(new Locale("in-ID"));
 
@@ -49,8 +53,6 @@ public class SipmApplication {
 				createPasarDTO.setAlamat(faker.address().fullAddress());
 				Pasar pasar = pasarService.create(createPasarDTO);
 
-
-				BarangPokokService barangPokokService1 = new BarangPokokImpl();
 				List<String> jenisBarangList = barangPokokService.getJenisBp();
 
 				for (String jenisB : jenisBarangList) {
@@ -59,14 +61,17 @@ public class SipmApplication {
 					addJenisBarangDTO.setJenis(jenisB);
 
 					JenisBarang jenisBarang = barangPokokService.createJenisBarang(addJenisBarangDTO);
+
 					for (int a = 0; a < 5; a++) {
-						AddBarangPokokDTO barangPokok = new AddBarangPokokDTO ();
+						AddBarangPokokDTO barangPokok = new AddBarangPokokDTO();
 
 						barangPokok.setIdJenisBarang(String.valueOf(jenisBarang));
 						barangPokok.setNama(jenisB + " " + faker.food().ingredient());
 						barangPokok.setStok(faker.number().numberBetween(1, 100)); // Stok antara 1 dan 100
 						barangPokok.setTotalPenjual(faker.number().numberBetween(1, 50)); // Total penjual antara 1 dan 50
-						barangPokok.setTanggalKadaluwarsa(new Date(System.currentTimeMillis() + faker.number().numberBetween(1, 365) * 24 * 60 * 60 * 1000L)); // Tanggal kadaluarsa dalam 1 tahun ke depan
+						barangPokok.setTanggalKadaluwarsa(new Date(System.currentTimeMillis() + faker.number().numberBetween(1, 365) * 24 * 60 * 60 * 1000L));
+						barangPokok.setListIdToko(new ArrayList<>());
+						barangPokokService.create(barangPokok);
 
 						List<Toko> listToko = new ArrayList<>();
 						List<UUID> listIdToko = new ArrayList<>();
@@ -75,50 +80,48 @@ public class SipmApplication {
 						List<AddMaintenanceDTO> listMaintenance = new ArrayList<>();
 
 						for (int z = 0; z < faker.number().numberBetween(1, 5); z++) { // Tambahkan 1-5 toko
-							// Buat dan isi objek Toko
-							Toko toko = new Toko();
-							UUID tokoId = UUID.randomUUID();
-							toko.setId(tokoId);
-							toko.setNamaToko(faker.company().name());
-							toko.setAlamatToko(faker.address().fullAddress());
-							toko.setNikPenjual(faker.idNumber().valid());
-							toko.setKontakPenjual(faker.phoneNumber().cellPhone());
+							AddTokoDTO tokoDTO  = new AddTokoDTO();
+							tokoDTO.setId(UUID.randomUUID());
+							tokoDTO.setNamaToko(faker.company().name());
+							tokoDTO.setAlamatToko(faker.address().fullAddress());
+							tokoDTO.setNikPenjual(faker.idNumber().valid());
+							tokoDTO.setKontakPenjual(faker.phoneNumber().cellPhone());
+							tokoDTO.setIdPasar(pasar.getId());
+							Toko toko = tokoService.createToko(tokoDTO);
 
-							// Tambahkan ID toko ke dalam daftar ID
-							listIdToko.add(tokoId);
+							listIdToko.add(tokoDTO.getId());
 							listToko.add(toko);
 
-							// Tambahkan beberapa entri untuk Transaksi
 							for (int u = 0; u < faker.number().numberBetween(2, 5); u++) {
 								AddTransaksiDTO transaksi = new AddTransaksiDTO();
-								transaksi.setIdToko(tokoId);
+								transaksi.setIdToko(toko.getId());
 								transaksi.setPendapatanHarian(faker.number().numberBetween(1000L, 10000L));
 								transaksi.setTanggalTransaksi(new Date());
+								tokoService.createTransaksi(transaksi);
 								listTransaksi.add(transaksi);
 							}
 
-							// Tambahkan beberapa entri untuk BackOrder
 							for (int p = 0; p < faker.number().numberBetween(2, 5); p++) {
 								AddBackOrderDTO backOrder = new AddBackOrderDTO();
-								backOrder.setIdToko(tokoId);
-								backOrder.setIdPasar(UUID.randomUUID());
-								backOrder.setIdJenisBarang(UUID.randomUUID().toString());
+								backOrder.setIdToko(toko.getId());
+								backOrder.setIdPasar(toko.getPasar().getId());
+								backOrder.setIdJenisBarang(jenisB);
 								backOrder.setNama(faker.commerce().productName());
+								barangPokokService.createBackOrder(backOrder);
 								listBackOrder.add(backOrder);
 							}
 
-							// Tambahkan beberapa entri untuk Maintenance
 							for (int m = 0; m < faker.number().numberBetween(2, 5); m++) {
 								AddMaintenanceDTO maintenance = new AddMaintenanceDTO();
-								maintenance.setIdToko(tokoId);
+								maintenance.setIdToko(toko.getId());
 								maintenance.setTanggal(new Date());
 								maintenance.setDeskripsiMaintenance(faker.lorem().sentence());
 								maintenance.setPelakuMaintenance(faker.name().fullName());
 								maintenance.setBiayaMaintenance(faker.number().numberBetween(5000L, 20000L));
+								tokoService.addMaintenance(maintenance);
 								listMaintenance.add(maintenance);
 							}
 						}
-
 						barangPokok.setListIdToko(listIdToko);
 
 
@@ -126,7 +129,6 @@ public class SipmApplication {
 						// Menyimpan BarangPokok menggunakan service
 						barangPokokService.create(barangPokok);
 					}}
-
 
 
 				List<String> jenisInfrastruktur = infrastrukturService.getJenis();
@@ -144,23 +146,24 @@ public class SipmApplication {
 					addInfrastrukturDTO.setIdPasar(pasar.getId());
 
 					// Simpan infrastruktur
-					infrastrukturService.create(addInfrastrukturDTO);
+					Infrastruktur infrastruktur =  infrastrukturService.create(addInfrastrukturDTO);
 
 					// Tambahkan beberapa jadwal pengecekan infrastruktur
 					for (int g = 0; g < faker.number().numberBetween(1, 3); g++) { // Misal 1-3 jadwal pengecekan
 						AddPengecekanInfrastrukturDTO pengecekanDTO = new AddPengecekanInfrastrukturDTO();
-						pengecekanDTO.setInfrastrukturID(addInfrastrukturDTO.getIdPasar()); // Ambil ID infrastruktur
+						pengecekanDTO.setInfrastrukturID(infrastruktur.getId()); // Ambil ID infrastruktur
 						pengecekanDTO.setTanggal(faker.date().between(fromDate, toDate)); // Tanggal acak
 						pengecekanDTO.setBiaya(faker.number().numberBetween(1000L, 5000L)); // Biaya acak
 						pengecekanDTO.setPelakuPengecekan(faker.name().fullName()); // Nama pelaku pengecekan
-						// Simpan jadwal pengecekan
-						infrastrukturService.addPengecekan(pengecekanDTO);
+						var cek =  infrastrukturService.addPengecekan(pengecekanDTO);
+						log.info("KONTOL");
+						log.info(cek.getInfrastruktur().getId().toString());
 					}
 
 					// Tambahkan beberapa jadwal maintenance infrastruktur
 					for (int n = 0; n < faker.number().numberBetween(1, 3); n++) { // Misal 1-3 jadwal maintenance
 						AddMaintenanceInfrastrukturDTO maintenanceDTO = new AddMaintenanceInfrastrukturDTO();
-						maintenanceDTO.setInfrastrukturID(addInfrastrukturDTO.getIdPasar()); // Ambil ID infrastruktur
+						maintenanceDTO.setInfrastrukturID(infrastruktur.getId()); // Ambil ID infrastruktur
 						maintenanceDTO.setTanggal(faker.date().between(fromDate, toDate)); // Tanggal acak
 						maintenanceDTO.setDeskripsi(faker.lorem().sentence()); // Deskripsi acak
 						maintenanceDTO.setPelakuMaintenance(faker.name().fullName()); // Nama pelaku maintenance
@@ -169,8 +172,6 @@ public class SipmApplication {
 						infrastrukturService.addMaintenance(maintenanceDTO);
 					}
 				}
-
-
 			}
 		};
 	}

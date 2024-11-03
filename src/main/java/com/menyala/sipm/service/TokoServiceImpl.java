@@ -1,19 +1,19 @@
 package com.menyala.sipm.service;
 
-import com.menyala.sipm.dto.BarangPokok.AddBarangPokokDTO;
-import com.menyala.sipm.dto.BarangPokok.AddJenisBarangDTO;
 import com.menyala.sipm.dto.Toko.AddMaintenanceDTO;
 import com.menyala.sipm.dto.Toko.AddTokoDTO;
 import com.menyala.sipm.dto.Toko.AddTransaksiDTO;
-import com.menyala.sipm.model.*;
+import com.menyala.sipm.model.JadwalMaintenanceToko;
+import com.menyala.sipm.model.Pasar;
+import com.menyala.sipm.model.Toko;
+import com.menyala.sipm.model.Transaksi;
 import com.menyala.sipm.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
+@Service
 public class TokoServiceImpl implements TokoService{
 
     @Autowired
@@ -26,14 +26,7 @@ public class TokoServiceImpl implements TokoService{
     private JadwalMaintenanceTokoRepo jadwalMaintenanceRepo;
 
     @Autowired
-    private BarangPokok barangPokok;
-
-    @Autowired
-    private JenisBarang jenisBarang;
-
-    @Autowired
     private BarangPokokRepo barangPokokRepo;
-
 
     @Autowired
     private TransaksiRepo transaksiRepo;
@@ -55,7 +48,7 @@ public class TokoServiceImpl implements TokoService{
                 new IllegalArgumentException("Pasar not found with ID: " + dto.getIdPasar()));
         toko.setPasar(pasar);
 
-        pasar.getListToko().add(toko);
+//        pasar.getListToko().add(toko);
 
         return tokoRepo.save(toko);
     }
@@ -78,12 +71,14 @@ public class TokoServiceImpl implements TokoService{
         jadwalMaintenanceToko.setPihakMaintenance(dto.getPelakuMaintenance());
         jadwalMaintenanceToko.setBiayaMaintenance(dto.getBiayaMaintenance());
         jadwalMaintenanceToko.setTanggal(dto.getTanggal());
+
         Toko toko = tokoRepo.findById(dto.getIdToko()).orElse(null);
         jadwalMaintenanceToko.setToko(toko);
-        if (toko.getListJadwalMaintenanceToko() == null) {
-            toko.setListJadwalMaintenanceToko(new ArrayList<>());
-        }
-        toko.getListJadwalMaintenanceToko().add(jadwalMaintenanceToko);
+//        if (toko.getListJadwalMaintenanceToko() == null) {
+//            toko.setListJadwalMaintenanceToko(new ArrayList<>());
+//        }
+//
+//        toko.getListJadwalMaintenanceToko().add(jadwalMaintenanceToko);
         return jadwalMaintenanceRepo.save(jadwalMaintenanceToko);
     };
 }

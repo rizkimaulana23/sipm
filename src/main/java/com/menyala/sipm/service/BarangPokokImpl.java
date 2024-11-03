@@ -6,27 +6,20 @@ import com.menyala.sipm.dto.BarangPokok.AddJenisBarangDTO;
 import com.menyala.sipm.model.*;
 import com.menyala.sipm.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@Service
 public class BarangPokokImpl implements BarangPokokService  {
-
-    @Autowired
-    BarangPokok barangPokok;
 
     @Autowired
     BarangPokokRepo barangPokokRepo;
 
     @Autowired
-    Toko toko;
-
-    @Autowired
     TokoRepo tokoRepo;
-
-    @Autowired
-    JenisBarang jenisBarang;
 
     @Autowired
     JenisBarangRepo jenisBarangRepo;
@@ -76,11 +69,11 @@ public class BarangPokokImpl implements BarangPokokService  {
         barangPokok.setJenisBarang(jenisBarang);
 
         List<Toko> listToko = new ArrayList<>();
-        for (UUID tokoId : dto.getListIdToko()) {
-            Toko toko = tokoRepo.findById(tokoId).orElseThrow(() ->
-                    new IllegalArgumentException("Toko not found with ID: " + tokoId));
-            listToko.add(toko);
-        }
+//        for (UUID tokoId : dto.getListIdToko()) {
+//            Toko toko = tokoRepo.findById(tokoId).orElseThrow(() ->
+//                    new IllegalArgumentException("Toko not found with ID: " + tokoId));
+//            listToko.add(toko);
+//        }
         barangPokok.setListToko(listToko);
 
         return barangPokokRepo.save(barangPokok);
