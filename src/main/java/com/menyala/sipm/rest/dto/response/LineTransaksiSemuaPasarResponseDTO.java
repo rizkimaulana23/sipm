@@ -9,5 +9,5 @@ import java.util.List;
 @NoArgsConstructor
 public class LineTransaksiSemuaPasarResponseDTO {
     private List<String> labels;
-    private List<Integer> data;
+    private List<Long> data;
 }
