@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Detail Transaksi</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<div>
+    <canvas id="bar-chart"></canvas>
+</div>
+
+<div>
+    <canvas id="line-chart"></canvas>
+</div>
+
+<p id="uuid" th:text="${uuid.toString()}"></p>
+<table id="main-table">
+    <thead>
+    <tr>
+        <th>No</th>
+        <th>ID Toko</th>
+        <th>Nama Toko</th>
+        <th>Total Pendapatan Toko</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="toko, iter : ${listToko}">
+        <td th:text="${iter.count}"></td>
+        <td th:text="${toko.getId()}"></td>
+        <td th:text="${toko.getNamaToko()}"></td>
+        <td th:text="${listTotalTransaksi.get(iter.index)}"></td>
+    </tr>
+    </tbody>
+</table>
+<script>
+    new DataTable('#main-table');
+
+    const id = document.getElementById('uuid').textContent
+
+    $(document).ready(function() {
+        // Step 1: Define the API URL
+        const apiUrl = `http://localhost:8080/api/transaksi/${id}/toko`;
+
+        // Step 2: Fetch data from the API
+        $.getJSON(apiUrl, function(response) {
+            if (response.status === 200) { // Check if API response is successful
+                // Extract labels and data for the chart from the API response
+                const labels = response.data.labels;
+                const data = response.data.data;
+
+                // Step 3: Create a bar chart using Chart.js
+                const ctx = document.getElementById('bar-chart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels, // Set labels for each bar (e.g., Jakarta Pusat, Jakarta Timur)
+                        datasets: [{
+                            label: 'Transaksi per Lokasi',
+                            data: data, // Set data for each bar
+                            backgroundColor: 'rgba(54, 162, 235, 0.6)', // Customize color
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Jumlah Transaksi'
+                                }
+                            },
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Lokasi'
+                                }
+                            }
+                        }
+                    }
+                });
+            } else {
+                console.error("Failed to load data: " + response.message);
+            }
+        });
+    });
+
+    $(document).ready(function() {
+        // Define the API URL
+        const apiUrl = `http://localhost:8080/api/transaksi/${id}`;
+
+        // Fetch data from the API
+        $.getJSON(apiUrl, function(response) {
+            if (response.status === 200) { // Check if the response status is 200 (success)
+                // Extract labels and data for the chart from the API response
+                const labels = response.data.labels;
+                const data = response.data.data;
+
+                // Create a line chart using Chart.js
+                const ctx = document.getElementById('line-chart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels, // Dates as x-axis labels
+                        datasets: [{
+                            label: 'Jumlah Transaksi Harian',
+                            data: data, // Transaction values as y-axis data points
+                            borderColor: 'rgba(75, 192, 192, 1)', // Line color
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)', // Fill color under the line
+                            borderWidth: 2,
+                            fill: true, // Fill the area under the line
+                            tension: 0.3 // Curve line tension for smoothness
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Jumlah Transaksi'
+                                }
+                            },
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Tanggal'
+                                }
+                            }
+                        }
+                    }
+                });
+            } else {
+                console.error("Failed to load data: " + response.message);
+            }
+        });
+    });
+</script>
+</body>
+</html>

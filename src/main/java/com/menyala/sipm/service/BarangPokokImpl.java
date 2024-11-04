@@ -67,14 +67,12 @@ public class BarangPokokImpl implements BarangPokokService  {
         JenisBarang jenisBarang = jenisBarangRepo.findById(dto.getIdJenisBarang()).orElse(null);
 
         barangPokok.setJenisBarang(jenisBarang);
-
-        List<Toko> listToko = new ArrayList<>();
-//        for (UUID tokoId : dto.getListIdToko()) {
-//            Toko toko = tokoRepo.findById(tokoId).orElseThrow(() ->
-//                    new IllegalArgumentException("Toko not found with ID: " + tokoId));
-//            listToko.add(toko);
-//        }
-        barangPokok.setListToko(listToko);
+        barangPokok.setListToko(new ArrayList<>());
+        for (UUID tokoId : dto.getListIdToko()) {
+            Toko toko = tokoRepo.findById(tokoId).orElseThrow(() ->
+                    new IllegalArgumentException("Toko not found with ID: " + tokoId));
+            barangPokok.getListToko().add(toko);
+        }
 
         return barangPokokRepo.save(barangPokok);
     }

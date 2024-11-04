@@ -1,7 +1,6 @@
 package com.menyala.sipm;
 
 import com.github.javafaker.Faker;
-import com.menyala.sipm.dto.BarangPokok.AddBackOrderDTO;
 import com.menyala.sipm.dto.BarangPokok.AddBarangPokokDTO;
 import com.menyala.sipm.dto.BarangPokok.AddJenisBarangDTO;
 import com.menyala.sipm.dto.Toko.AddMaintenanceDTO;
@@ -60,8 +59,53 @@ public class SipmApplication {
 				createPasarDTO.setAlamat(faker.address().fullAddress());
 				Pasar pasar = pasarService.create(createPasarDTO);
 
-				List<String> jenisBarangList = barangPokokService.getJenisBp();
+				List<UUID> tokoList = new ArrayList<>();
 
+				for (int z = 0; z < 15; z++) { // Tambahkan 1-5 toko
+
+					AddTokoDTO tokoDTO  = new AddTokoDTO();
+					tokoDTO.setId(UUID.randomUUID());
+					tokoDTO.setNamaToko(faker.company().name());
+					tokoDTO.setAlamatToko(faker.address().fullAddress());
+					tokoDTO.setNikPenjual(faker.idNumber().valid());
+					tokoDTO.setKontakPenjual(faker.phoneNumber().cellPhone());
+					tokoDTO.setIdPasar(pasar.getId());
+					Toko toko = tokoService.createToko(tokoDTO);
+
+					tokoList.add(toko.getId());
+
+					for (int u = 0; u < faker.number().numberBetween(2, 5); u++) {
+						AddTransaksiDTO transaksi = new AddTransaksiDTO();
+						transaksi.setIdToko(toko.getId());
+						transaksi.setPendapatanHarian(faker.number().numberBetween(1000L, 10000L));
+						transaksi.setTanggalTransaksi(faker.date().past(14, TimeUnit.DAYS));
+						tokoService.createTransaksi(transaksi);
+//						listTransaksi.add(transaksi);
+					}
+
+//					for (int p = 0; p < faker.number().numberBetween(2, 5); p++) {
+//						AddBackOrderDTO backOrder = new AddBackOrderDTO();
+//						backOrder.setIdToko(toko.getId());
+//						backOrder.setIdPasar(toko.getPasar().getId());
+//						backOrder.setIdJenisBarang("beras");
+//						backOrder.setNama(faker.commerce().productName());
+//						barangPokokService.createBackOrder(backOrder);
+////						listBackOrder.add(backOrder);
+//					}
+
+					for (int m = 0; m < faker.number().numberBetween(2, 5); m++) {
+						AddMaintenanceDTO maintenance = new AddMaintenanceDTO();
+						maintenance.setIdToko(toko.getId());
+						maintenance.setTanggal(new Date());
+						maintenance.setDeskripsiMaintenance(faker.lorem().sentence());
+						maintenance.setPelakuMaintenance(faker.name().fullName());
+						maintenance.setBiayaMaintenance(faker.number().numberBetween(5000L, 20000L));
+						tokoService.addMaintenance(maintenance);
+//						listMaintenance.add(maintenance);
+					}
+				}
+
+				List<String> jenisBarangList = barangPokokService.getJenisBp();
 				for (String jenisB : jenisBarangList) {
 
 					AddJenisBarangDTO addJenisBarangDTO = new AddJenisBarangDTO();
@@ -77,65 +121,10 @@ public class SipmApplication {
 						barangPokok.setStok(faker.number().numberBetween(1, 100)); // Stok antara 1 dan 100
 						barangPokok.setTotalPenjual(faker.number().numberBetween(1, 50)); // Total penjual antara 1 dan 50
 						barangPokok.setTanggalKadaluwarsa(new Date(System.currentTimeMillis() + faker.number().numberBetween(1, 365) * 24 * 60 * 60 * 1000L));
-						barangPokok.setListIdToko(new ArrayList<>());
+						barangPokok.setListIdToko(tokoList);
 						barangPokokService.create(barangPokok);
-
-						List<Toko> listToko = new ArrayList<>();
-						List<UUID> listIdToko = new ArrayList<>();
-						List<AddTransaksiDTO> listTransaksi = new ArrayList<>();
-						List<AddBackOrderDTO> listBackOrder = new ArrayList<>();
-						List<AddMaintenanceDTO> listMaintenance = new ArrayList<>();
-
-						for (int z = 0; z < faker.number().numberBetween(1, 5); z++) { // Tambahkan 1-5 toko
-							AddTokoDTO tokoDTO  = new AddTokoDTO();
-							tokoDTO.setId(UUID.randomUUID());
-							tokoDTO.setNamaToko(faker.company().name());
-							tokoDTO.setAlamatToko(faker.address().fullAddress());
-							tokoDTO.setNikPenjual(faker.idNumber().valid());
-							tokoDTO.setKontakPenjual(faker.phoneNumber().cellPhone());
-							tokoDTO.setIdPasar(pasar.getId());
-							Toko toko = tokoService.createToko(tokoDTO);
-
-							listIdToko.add(tokoDTO.getId());
-							listToko.add(toko);
-
-							for (int u = 0; u < faker.number().numberBetween(2, 5); u++) {
-								AddTransaksiDTO transaksi = new AddTransaksiDTO();
-								transaksi.setIdToko(toko.getId());
-								transaksi.setPendapatanHarian(faker.number().numberBetween(1000L, 10000L));
-								transaksi.setTanggalTransaksi(faker.date().past(14, TimeUnit.DAYS));
-								tokoService.createTransaksi(transaksi);
-								listTransaksi.add(transaksi);
-							}
-
-							for (int p = 0; p < faker.number().numberBetween(2, 5); p++) {
-								AddBackOrderDTO backOrder = new AddBackOrderDTO();
-								backOrder.setIdToko(toko.getId());
-								backOrder.setIdPasar(toko.getPasar().getId());
-								backOrder.setIdJenisBarang(jenisB);
-								backOrder.setNama(faker.commerce().productName());
-								barangPokokService.createBackOrder(backOrder);
-								listBackOrder.add(backOrder);
-							}
-
-							for (int m = 0; m < faker.number().numberBetween(2, 5); m++) {
-								AddMaintenanceDTO maintenance = new AddMaintenanceDTO();
-								maintenance.setIdToko(toko.getId());
-								maintenance.setTanggal(new Date());
-								maintenance.setDeskripsiMaintenance(faker.lorem().sentence());
-								maintenance.setPelakuMaintenance(faker.name().fullName());
-								maintenance.setBiayaMaintenance(faker.number().numberBetween(5000L, 20000L));
-								tokoService.addMaintenance(maintenance);
-								listMaintenance.add(maintenance);
-							}
-						}
-						barangPokok.setListIdToko(listIdToko);
-
-
-						AddJenisBarangDTO jenisBarangDTO = 	new AddJenisBarangDTO();
-						// Menyimpan BarangPokok menggunakan service
-						barangPokokService.create(barangPokok);
-					}}
+					}
+				}
 
 
 				List<String> jenisInfrastruktur = infrastrukturService.getJenis();
