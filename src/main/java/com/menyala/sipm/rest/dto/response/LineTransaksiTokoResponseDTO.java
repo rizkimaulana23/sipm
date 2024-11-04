@@ -10,6 +10,6 @@ import java.util.List;
 public class LineTransaksiTokoResponseDTO {
     private String namaToko;
     private String namaPasar;
-    private List<Integer> data;
+    private List<Long> data;
     private List<String> labels;
 }
