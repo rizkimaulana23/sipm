@@ -7,4 +7,5 @@ import java.util.UUID;
 
 public interface PasarRepo extends JpaRepository<Pasar, UUID> {
 
+
 }

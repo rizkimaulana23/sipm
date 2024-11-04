@@ -9,6 +9,6 @@ import java.util.List;
 @NoArgsConstructor
 public class LineTransaksiSuatuPasarResponseDTO {
     private String namaPasar;
-    private List<Integer> data;
+    private List<Long> data;
     private List<String> labels;
 }
