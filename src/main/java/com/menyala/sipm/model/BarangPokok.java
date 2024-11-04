@@ -20,6 +20,7 @@ public class BarangPokok {
     private Integer stok;
     private Integer totalPenjual;
     private Date tanggalKadaluarsa;
+    private Date tanggalMasuk;
 
     @ManyToMany
     @JoinTable(

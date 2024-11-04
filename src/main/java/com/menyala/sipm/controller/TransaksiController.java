@@ -81,8 +81,12 @@ public class TransaksiController {
         return "transaksi/detail-transaksi";
     }
 
-
-    public String detailTransaksiToko(Model model, UUID uuid) {
-
+    @GetMapping("/{id}/toko")
+    public String detailTransaksiToko(Model model, @PathVariable("id") UUID uuid) {
+        Toko toko = tokoRepo.findById(uuid).orElse(null);
+        List<Transaksi> transaksiList = transaksiRepo.findAllByToko(toko);
+        model.addAttribute("listTransaksi", transaksiList);
+        model.addAttribute("uuid", uuid);
+        return "transaksi/detail-transaksi-toko";
     }
 }

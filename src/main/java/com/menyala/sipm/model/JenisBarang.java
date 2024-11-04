@@ -17,6 +17,8 @@ public class JenisBarang {
     @Id
     private String jenis;
 
+    private Integer shelfLife;
+
     @OneToMany(mappedBy = "jenisBarang", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<BarangPokok> listBarangPokok;
 

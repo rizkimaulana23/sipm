@@ -7,4 +7,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AddJenisBarangDTO {
     String jenis;
+    Integer shelfLife;
 }

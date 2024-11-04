@@ -16,5 +16,6 @@ public class AddBarangPokokDTO {
     private Integer stok;                // Total stock of the item
     private Integer totalPenjual;        // Total sellers for this item
     private Date tanggalKadaluwarsa;            // Expiry date of the item
+    private Date tanggalMasuk;
     private String idJenisBarang;
 }

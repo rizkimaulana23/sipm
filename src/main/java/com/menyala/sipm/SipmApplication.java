@@ -110,19 +110,28 @@ public class SipmApplication {
 
 					AddJenisBarangDTO addJenisBarangDTO = new AddJenisBarangDTO();
 					addJenisBarangDTO.setJenis(jenisB);
+					addJenisBarangDTO.setShelfLife(5 + random.nextInt(16));
 
 					JenisBarang jenisBarang = barangPokokService.createJenisBarang(addJenisBarangDTO);
 
 					for (int a = 0; a < 5; a++) {
-						AddBarangPokokDTO barangPokok = new AddBarangPokokDTO();
+						String namaBarang = jenisB + " " + faker.food().ingredient();
+						Date tanggalMasukCurrent = new Date();
+						for (int b = 0; b < 5; b++) {
+							AddBarangPokokDTO barangPokok = new AddBarangPokokDTO();
+							barangPokok.setIdJenisBarang(jenisBarang.getJenis());
+							barangPokok.setNama(namaBarang);
+							barangPokok.setStok(faker.number().numberBetween(1, 100));
+							barangPokok.setTotalPenjual(faker.number().numberBetween(1, 50));
+							barangPokok.setTanggalMasuk(tanggalMasukCurrent);
+							barangPokok.setTanggalKadaluwarsa(new Date(tanggalMasukCurrent.getTime() + jenisBarang.getShelfLife() * 24 * 60 * 60 * 1000L));
+							barangPokok.setListIdToko(tokoList);
+							barangPokokService.create(barangPokok);
 
-						barangPokok.setIdJenisBarang(String.valueOf(jenisBarang));
-						barangPokok.setNama(jenisB + " " + faker.food().ingredient());
-						barangPokok.setStok(faker.number().numberBetween(1, 100)); // Stok antara 1 dan 100
-						barangPokok.setTotalPenjual(faker.number().numberBetween(1, 50)); // Total penjual antara 1 dan 50
-						barangPokok.setTanggalKadaluwarsa(new Date(System.currentTimeMillis() + faker.number().numberBetween(1, 365) * 24 * 60 * 60 * 1000L));
-						barangPokok.setListIdToko(tokoList);
-						barangPokokService.create(barangPokok);
+							int totalRangeDays = 2 * jenisBarang.getShelfLife() + 1;
+							int randomDaysOffset = random.nextInt(totalRangeDays) - jenisBarang.getShelfLife();
+							tanggalMasukCurrent = new Date(tanggalMasukCurrent.getTime() + randomDaysOffset * 24 * 60 * 60 * 1000L);
+						}
 					}
 				}
 

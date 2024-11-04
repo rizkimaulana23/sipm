@@ -51,6 +51,7 @@ public class BarangPokokImpl implements BarangPokokService  {
     public JenisBarang createJenisBarang(AddJenisBarangDTO dto){
         JenisBarang jenisBarang1 = new JenisBarang();
         jenisBarang1.setJenis(dto.getJenis());
+        jenisBarang1.setShelfLife(dto.getShelfLife());
         return jenisBarangRepo.save(jenisBarang1);
     }
 
@@ -63,6 +64,7 @@ public class BarangPokokImpl implements BarangPokokService  {
         barangPokok.setStok(dto.getStok());
         barangPokok.setTotalPenjual(dto.getTotalPenjual());
         barangPokok.setTanggalKadaluarsa(dto.getTanggalKadaluwarsa());
+        barangPokok.setTanggalMasuk(dto.getTanggalMasuk());
 
         JenisBarang jenisBarang = jenisBarangRepo.findById(dto.getIdJenisBarang()).orElse(null);
 
