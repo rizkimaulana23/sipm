@@ -29,6 +29,33 @@ public class TransaksiRestServiceImpl implements TransaksiRestService {
     @Override
     public BarTransaksiLokasiResponseDTO barTransaksiLokasi() {
         BarTransaksiLokasiResponseDTO response = new BarTransaksiLokasiResponseDTO();
+        List<String> listKota = List.of("Jakarta Utara","Jakarta Pusat", "Jakarta Timur", "Jakarta Barat", "Jakarta Selatan");
+
+        Map<String, Long> kotaPasarMap = new HashMap<>();
+        for (String kota : listKota) {
+            for (Pasar pasar : pasarRepo.findAllByKota(kota)) {
+                for (Toko toko : tokoRepo.findAllByPasar(pasar)) {
+                    for (Transaksi transaksi : transaksiRepo.findAllByToko(toko)) {
+                        if (!kotaPasarMap.containsKey(kota)) {
+                            kotaPasarMap.put(kota, transaksi.getPendapatanHarian());
+                        } else {
+                            kotaPasarMap.put(kota, kotaPasarMap.get(kota) +  transaksi.getPendapatanHarian());
+                        }
+                    }
+                }
+            }
+        }
+
+        List<String> kotaList = new ArrayList<>();
+        List<Long> transactionList = new ArrayList<>();
+
+        // Iterate over the map and add keys and values to their respective lists
+        for (Map.Entry<String, Long> entry : kotaPasarMap.entrySet()) {
+            kotaList.add(entry.getKey());
+            transactionList.add(entry.getValue());
+        }
+        response.setData(transactionList);
+        response.setLabels(kotaList);
         return response;
     }
 

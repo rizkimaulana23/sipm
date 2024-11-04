@@ -23,6 +23,8 @@ public class Pasar {
 
     private String alamat;
 
+    private String kota;
+
     @OneToMany(mappedBy = "pasar", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Infrastruktur> listInfrastruktur;
 

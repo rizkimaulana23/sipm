@@ -27,6 +27,7 @@ public class PasarServiceImpl implements PasarService {
         pasar.setNama(dto.getNama());
         pasar.setAlamat(dto.getAlamat());
         pasar.setRetribusi(dto.getRetribusi());
+        pasar.setKota(dto.getKota());
         return pasarRepo.save(pasar);
     }
 

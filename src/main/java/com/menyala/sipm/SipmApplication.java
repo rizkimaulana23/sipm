@@ -53,6 +53,9 @@ public class SipmApplication {
 				String location = Math.random() < 0.5 ? namaKota : namaJalan;
 
 				createPasarDTO.setNama("Pasar " + location);
+				List<String> listKota = List.of("Jakarta Utara","Jakarta Pusat", "Jakarta Timur", "Jakarta Barat", "Jakarta Selatan");
+				Random random = new Random();
+				createPasarDTO.setKota(listKota.get(random.nextInt(listKota.size())));
 				createPasarDTO.setRetribusi(retributionGenerator());
 				createPasarDTO.setAlamat(faker.address().fullAddress());
 				Pasar pasar = pasarService.create(createPasarDTO);

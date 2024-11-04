@@ -8,6 +8,6 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 public class BarTransaksiLokasiResponseDTO {
-    private List<Integer> data;
+    private List<Long> data;
     private List<String> labels;
 }

@@ -9,4 +9,5 @@ public class CreatePasarDTO {
     private String nama;
     private Long retribusi;
     private String alamat;
+    private String kota;
 }
