@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.SQLRestriction;
 
 import java.util.Date;
 import java.util.List;
@@ -14,7 +13,6 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Table
 public class BarangPokok {
     @Id
     private UUID id;
