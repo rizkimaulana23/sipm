@@ -16,12 +16,9 @@ import java.util.UUID;
 public class BarangPokok {
     @Id
     private UUID id;
-
     private String nama;
-
     private Integer stok;
     private Integer totalPenjual;
-
     private Date tanggalKadaluarsa;
 
     @ManyToMany
