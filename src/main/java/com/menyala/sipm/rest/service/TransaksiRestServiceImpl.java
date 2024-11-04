@@ -156,6 +156,31 @@ public class TransaksiRestServiceImpl implements TransaksiRestService {
     @Override
     public BarTransaksiHarianTokoSuatuPasarResponseDTO barTransaksiHarianTokoSuatuPasar(UUID id) {
         BarTransaksiHarianTokoSuatuPasarResponseDTO response  = new BarTransaksiHarianTokoSuatuPasarResponseDTO();
+
+        Map<String, Long> tokoTransaksiMap = new HashMap<>();
+        Pasar pasar = pasarRepo.findById(id).get();
+        response.setNamaPasar(pasar.getNama());
+        for (Toko toko: tokoRepo.findAllByPasar(pasar)) {
+            for (Transaksi transaksi : transaksiRepo.findAllByToko(toko)) {
+                if (!tokoTransaksiMap.containsKey(toko.getPasar().getId().toString())) {
+                    tokoTransaksiMap.put(toko.getId().toString(), transaksi.getPendapatanHarian());
+                } else {
+                    tokoTransaksiMap.put(toko.getId().toString(), tokoTransaksiMap.get(toko.getId().toString()) + transaksi.getPendapatanHarian());
+                }
+            }
+        }
+
+        List<String> tokoList = new ArrayList<>();
+        List<Long> transactionList = new ArrayList<>();
+
+        // Iterate over the map and add keys and values to their respective lists
+        for (Map.Entry<String, Long> entry : tokoTransaksiMap.entrySet()) {
+            tokoList.add(tokoRepo.findById(UUID.fromString(entry.getKey())).get().getNamaToko());
+            transactionList.add(entry.getValue());
+        }
+
+        response.setData(transactionList);
+        response.setLabels(tokoList);
         return response;
     }
 }
