@@ -4,6 +4,7 @@ import com.menyala.sipm.model.Infrastruktur;
 import com.menyala.sipm.model.JadwalMaintenanceInfrastruktur;
 import com.menyala.sipm.model.JadwalPengecekanInfrastruktur;
 import com.menyala.sipm.model.Pasar;
+import com.menyala.sipm.repository.BackOrderRepo;
 import com.menyala.sipm.repository.InfrastrukturRepo;
 import com.menyala.sipm.repository.PasarRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,9 @@ public class InfrastrukturController {
 
     @Autowired
     private PasarRepo pasarRepo;
+
+    @Autowired
+    private BackOrderRepo backOrderRepo;
 
     @GetMapping("")
     public String allPasar(Model model) {
@@ -54,6 +58,7 @@ public class InfrastrukturController {
         }
         model.addAttribute("listMaintenance", listMaintenance);
         model.addAttribute("listPengecekan", listPengecekan);
+        model.addAttribute("listBackOrder", backOrderRepo.findAllByPasar(pasar));
         return "infrastruktur/detail-infrastruktur";
     }
 

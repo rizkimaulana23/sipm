@@ -63,8 +63,30 @@
     </tr>
     </tbody>
 </table>
+<h5>Table Back Order</h5>
+<table id="table-back-order">
+    <thead>
+    <tr>
+        <th>No</th>
+        <th>ID</th>
+        <th>Jenis Barang</th>
+        <th>Nama Barang</th>
+        <th>Kuantitas</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="data, iter : ${listBackOrder}">
+        <td th:text="${iter.count}"></td>
+        <td th:text="${data.id}"></td>
+        <td th:text="${data.jenisBarang.getJenis()}"></td>
+        <td th:text="${data.nama}"></td>
+        <td th:text="${data.kuantitas}"></td>
+    </tr>
+    </tbody>
+</table>
 <script>
     new DataTable('#main-table');
+    new DataTable('#table-back-order');
 </script>
 </body>
 </html>

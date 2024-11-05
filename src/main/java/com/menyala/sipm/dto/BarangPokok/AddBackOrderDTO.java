@@ -12,4 +12,5 @@ public class AddBackOrderDTO {
     private UUID idPasar;          // The ID of the Pasar (market) associated with the back order
     private String idJenisBarang;    // The ID of the JenisBarang (type of item) associated with the back order
     private String nama;
+    private int kuantitas;
 }

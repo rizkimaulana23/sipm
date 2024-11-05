@@ -15,8 +15,7 @@ public class BackOrder {
     @Id
     private UUID id;
     private String nama;
-
-
+    private int kuantitas;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_pasar", referencedColumnName = "id")
