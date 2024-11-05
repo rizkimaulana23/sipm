@@ -26,8 +26,10 @@
     <tbody>
     <tr th:each="pasar, iter : ${listPasar}">
         <td th:text="${iter.index}"></td>
-        <td th:text="${pasar.id}"></td>
-        <td th:text="${pasar.nama}"></td>
+        <td th:text="${pasar.id.toString()}"></td>
+        <td>
+            <a th:href="@{|/infrastruktur/${pasar.id}|}" th:text="${pasar.nama}"></a>
+        </td>
         <td th:text="${pasar.retribusi}"></td>
         <td th:text="${infrastrukturCount.get(iter.index)}"></td>
     </tr>

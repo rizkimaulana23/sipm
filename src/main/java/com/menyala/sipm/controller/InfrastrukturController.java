@@ -1,6 +1,8 @@
 package com.menyala.sipm.controller;
 
 import com.menyala.sipm.model.Infrastruktur;
+import com.menyala.sipm.model.JadwalMaintenanceInfrastruktur;
+import com.menyala.sipm.model.JadwalPengecekanInfrastruktur;
 import com.menyala.sipm.model.Pasar;
 import com.menyala.sipm.repository.InfrastrukturRepo;
 import com.menyala.sipm.repository.PasarRepo;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -43,6 +46,25 @@ public class InfrastrukturController {
         List<Infrastruktur> listInfrastruktur = infrastrukturRepo.findAllByPasar(pasar);
         model.addAttribute("listInfrastruktur", listInfrastruktur);
         model.addAttribute("pasar", pasar);
-        return "infarastruktur/detail-infrastruktur";
+        List<Date> listMaintenance = new ArrayList<>();
+        List<Date> listPengecekan = new ArrayList<>();
+        for (Infrastruktur i : listInfrastruktur) {
+            listMaintenance.add(i.getListJadwalMaintenanceInfrastruktur().getLast().getTanggalMaintenance());
+            listPengecekan.add(i.getListJadwalPengecekanInfrastruktur().getLast().getTanggal());
+        }
+        model.addAttribute("listMaintenance", listMaintenance);
+        model.addAttribute("listPengecekan", listPengecekan);
+        return "infrastruktur/detail-infrastruktur";
+    }
+
+    @GetMapping("/detail/{id}")
+    public String detailInfrastruktur(Model model, @PathVariable("id") UUID id) {
+        Infrastruktur infrastruktur = infrastrukturRepo.findById(id).orElse(null);
+        List<JadwalMaintenanceInfrastruktur> listMaintenance = infrastruktur.getListJadwalMaintenanceInfrastruktur();
+        List<JadwalPengecekanInfrastruktur> listPengecekan = infrastruktur.getListJadwalPengecekanInfrastruktur();
+        model.addAttribute("listMaintenance", listMaintenance);
+        model.addAttribute("listPengecekan", listPengecekan);
+        model.addAttribute("infrastruktur", infrastruktur);
+        return "infrastruktur/detail-nama-infrastruktur";
     }
 }

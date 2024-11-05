@@ -13,6 +13,54 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-
+<h5>Data Toko</h5>
+<ul>
+    <li>
+        <div>ID</div>
+        <div th:text="${pasar.getId()}"></div>
+    </li>
+    <li>
+        <div>Nama Pasar</div>
+        <div th:text="${pasar.getNama()}"></div>
+    </li>
+    <li>
+        <div>Alamat</div>
+        <div th:text="${pasar.getAlamat()}, ${pasar.getKota()}"></div>
+    </li>
+    <li>
+        <div>Nominal Retribusi</div>
+        <div th:text="${pasar.getRetribusi()}"></div>
+    </li>
+</ul>
+<h5>Daftar Infrastruktur</h5>
+<table id="main-table">
+    <thead>
+    <tr>
+        <th>No</th>
+        <th>Jenis Infrastruktur</th>
+        <th>Nama Infrastruktur</th>
+        <th>Penanggung Jawab</th>
+        <th>Tanggal Pembangunan</th>
+        <th>Tanggal Pengecekan Terakhir</th>
+        <th>Tanggal Maintenance Terakhir</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="infrastruktur, iter : ${listInfrastruktur}">
+        <td th:text="${iter.count}"></td>
+        <td th:text="${infrastruktur.getJenis()}"></td>
+        <td>
+            <a th:href="@{|/infrastruktur/detail/${infrastruktur.getId()}|}" th:text="${infrastruktur.getNamaInfrastruktur()}"></a>
+        </td>
+        <td th:text="${infrastruktur.getPenanggungJawab()}"></td>
+        <td th:text="${infrastruktur.getTanggalPembangunan()}"></td>
+        <td th:text="${listPengecekan.get(iter.index)}"></td>
+        <td th:text="${listMaintenance.get(iter.index)}"></td>
+    </tr>
+    </tbody>
+</table>
+<script>
+    new DataTable('#main-table');
+</script>
 </body>
 </html>
