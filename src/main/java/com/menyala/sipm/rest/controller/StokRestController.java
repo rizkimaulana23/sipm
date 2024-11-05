@@ -2,6 +2,7 @@ package com.menyala.sipm.rest.controller;
 
 import com.menyala.sipm.rest.dto.response.BarStokJenisBarangSemuaPasarResponseDTO;
 import com.menyala.sipm.rest.dto.response.FailedBaseResponseDTO;
+import com.menyala.sipm.rest.dto.response.LineChartStokBarangSemuaPasarResponseDTO;
 import com.menyala.sipm.rest.dto.response.SuccessBaseResponseDTO;
 import com.menyala.sipm.rest.service.StokRestService;
 import com.menyala.sipm.rest.service.TransaksiRestService;
@@ -47,8 +48,8 @@ public class StokRestController {
     @GetMapping("/line")
     public ResponseEntity<?> lineChartStokBarang() {
         try {
-            BarStokJenisBarangSemuaPasarResponseDTO responseDTO = stokRestService.barChartJenisBarangSemuaPasar();
-            var successBaseResponse = new SuccessBaseResponseDTO<BarStokJenisBarangSemuaPasarResponseDTO>();
+            LineChartStokBarangSemuaPasarResponseDTO responseDTO = stokRestService.lineChartStokBarangSemuaPasar();
+            var successBaseResponse = new SuccessBaseResponseDTO<LineChartStokBarangSemuaPasarResponseDTO>();
             successBaseResponse.setMessage("Data berhasil diambil");
             successBaseResponse.setStatus(HttpStatus.OK.value());
             successBaseResponse.setData(responseDTO);

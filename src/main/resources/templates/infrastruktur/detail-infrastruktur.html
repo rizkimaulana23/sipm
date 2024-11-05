@@ -25,7 +25,11 @@
     </li>
     <li>
         <div>Alamat</div>
-        <div th:text="${pasar.getAlamat()}, ${pasar.getKota()}"></div>
+        <div th:text="${pasar.getAlamat()}"></div>
+    </li>
+    <li>
+        <div>Kota</div>
+        <div th:text="${pasar.getKota()}"></div>
     </li>
     <li>
         <div>Nominal Retribusi</div>
