@@ -18,19 +18,16 @@
                     <a class="nav-link" th:href="@{/}" th:classappend="${menuSelected == 'home'} ? 'active' : ''">Beranda</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:classappend="${menuSelected == 'infrastruktur'} ? 'active' : ''">Infrastruktur</a>
+                    <a class="nav-link" th:href="@{/infrastruktur}" th:classappend="${menuSelected == 'infrastruktur'} ? 'active' : ''">Infrastruktur</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:classappend="${menuSelected == 'pasar'} ? 'active' : ''">Pasar</a>
+                    <a class="nav-link" th:href="@{/pasar}" th:classappend="${menuSelected == 'pasar'} ? 'active' : ''">Pasar</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" th:classappend="${menuSelected == 'toko'} ? 'active' : ''">Toko</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" th:classappend="${menuSelected == 'laporan '} ? 'active' : ''">Laporan</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:classappend="${menuSelected == 'back-order'} ? 'active' : ''">Back Order</a>
                 </li>
             </ul>
         </div>
