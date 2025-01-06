@@ -87,6 +87,7 @@ public class TransaksiController {
         List<Transaksi> transaksiList = transaksiRepo.findAllByToko(toko);
         model.addAttribute("listTransaksi", transaksiList);
         model.addAttribute("uuid", uuid);
+        model.addAttribute("toko", toko);
         return "transaksi/detail-transaksi-toko";
     }
 }

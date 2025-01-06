@@ -13,32 +13,43 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-<div>
-    <canvas id="line-chart"></canvas>
+<nav th:replace="~{fragments/navbar :: navbar('stok')}"></nav>
+<!--<div>-->
+<!--    <canvas id="line-chart"></canvas>-->
+<!--</div>-->
+<!--<div>-->
+<!--    <canvas id="bar-chart"></canvas>-->
+<!--</div>-->
+<div class="container my-4">
+    <div class="card">
+        <div class="card-body">
+            <div class="card-title h5">Total Stok Tiap Pasar</div>
+            <table id="main-table">
+                <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Nama Pasar</th>
+                    <th>Alamat</th>
+                    <th>Kota</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="data, iter : ${listPasar}">
+                    <td th:text="${iter.count}"></td>
+                    <td>
+                        <a th:href="@{|/stok/${data.id}|}" th:text="${data.getNama()}"></a>
+                    </td>
+                    <td th:text="${data.alamat}"></td>
+                    <td th:text="${data.kota}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
-<div>
-    <canvas id="bar-chart"></canvas>
-</div>
-<h5>Stok Tiap Pasar</h5>
-<table>
-    <thead>
-    <tr>
-        <th>No</th>
-        <th>Nama Pasar</th>
-        <th>Alamat</th>
-        <th>Kota</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="data, iter : ${listPasar}">
-        <td th:text="${iter.count}"></td>
-        <td>
-            <a th:href="@{|/stok/${data.id}|}"></a>
-        </td>
-        <td th:text="${data.alamat}"></td>
-        <td th:text="${data.kota}"></td>
-    </tr>
-    </tbody>
-</table>
+<script>
+    new DataTable('#main-table');
+
+</script>
 </body>
 </html>

@@ -13,30 +13,51 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-<nav th:replace="~{fragments/navbar :: navbar('pasar')}"></nav>
+<nav th:replace="~{fragments/navbar :: navbar('transaksi')}"></nav>
 
-<div>
-    <canvas id="line-chart"></canvas>
+<div class="container my-4">
+    <h3><span th:text="${toko.getNamaToko()}"></span> - <span th:text="${toko.getPasar().getNama()}"></span></h3>
 </div>
-<p th:text="${uuid}" id="uuid"></p>
-<table id="main-table">
-    <thead>
-    <tr>
-        <th>No</th>
-        <th>Id Transaksi</th>
-        <th>Tanggal Transaksi</th>
-        <th>Pendapatan Harian</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="transaksi, iter : ${listTransaksi}">
-        <td th:text="${iter.index}"></td>
-        <td th:text="${transaksi.getIdTransaksi()}"></td>
-        <td th:text="${transaksi.getTanggalTransaksi()}"></td>
-        <td th:text="${transaksi.getPendapatanHarian()}"></td>
-    </tr>
-    </tbody>
-</table>
+<div class="container my-4">
+    <div class="row g-4">
+        <div class="col">
+            <div class="card h-60">
+                <div class="card-body">
+                    <div class="card-title h5">Jumlah Transaksi Harian Toko</div>
+                    <canvas id="line-chart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container my-4">
+    <div class="card">
+        <div class="card-body">
+            <div class="card-title h5">Daftar Transaksi</div>
+            <table id="main-table">
+                <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Id Transaksi</th>
+                    <th>Tanggal Transaksi</th>
+                    <th>Pendapatan Harian</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="transaksi, iter : ${listTransaksi}">
+                    <td th:text="${iter.index}"></td>
+                    <td th:text="${transaksi.getIdTransaksi()}"></td>
+                    <td th:text="${transaksi.getTanggalTransaksi()}"></td>
+                    <td th:text="${transaksi.getPendapatanHarian()}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<p th:text="${uuid}" id="uuid" class="d-none"></p>
 <script>
     new DataTable('#main-table');
 

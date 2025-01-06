@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
 </head>
 <body>
-
 <nav th:fragment="navbar(menuSelected)" class="navbar navbar-expand-lg">
+
     <div class="container-fluid">
         <a class="navbar-brand fw-bold main-title" style="color: #F8981D">Sistem Informasi Pasar Merdeka</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -27,7 +27,10 @@
                     <a class="nav-link" th:classappend="${menuSelected == 'toko'} ? 'active' : ''">Toko</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:classappend="${menuSelected == 'laporan '} ? 'active' : ''">Laporan</a>
+                    <a class="nav-link" th:href="@{/transaksi}" th:classappend="${menuSelected == 'transaksi'} ? 'active' : ''">Transaksi</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/stok}" th:classappend="${menuSelected == 'stok '} ? 'active' : ''">Stok</a>
                 </li>
             </ul>
         </div>

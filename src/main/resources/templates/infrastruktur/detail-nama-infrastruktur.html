@@ -14,75 +14,96 @@
 </head>
 <body>
 <nav th:replace="~{fragments/navbar :: navbar('infrastruktur')}"></nav>
-<h4>Data Infrastruktur</h4>
-<ul>
-    <li>
-        <div>ID Infrastruktur</div>
-        <div th:text="${infrastruktur.getId()}"></div>
-    </li>
-    <li>
-        <div>Nama</div>
-        <div th:text="${infrastruktur.getNamaInfrastruktur()}"></div>
-    </li>
-    <li>
-        <div>Penanggung Jawab</div>
-        <div th:text="${infrastruktur.getPenanggungJawab()}"></div>
-    </li>
-    <li>
-        <div>Jenis Infrastruktur</div>
-        <div th:text="${infrastruktur.getJenis()}"></div>
-    </li>
-    <li>
-        <div>Tanggal Pembangunan</div>
-        <div th:text="${infrastruktur.getTanggalPembangunan()}"></div>
-    </li>
-</ul>
-<h5>Riwayat Pengecekan</h5>
-<table id="pengecekan-table">
-    <thead>
-    <tr>
-        <th>No</th>
-        <th>ID</th>
-        <th>Tanggal</th>
-        <th>Deskripsi</th>
-        <th>Pelaku Pengecekan</th>
-        <th>Biaya Pengecekan</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="data, iter : ${listPengecekan}">
-        <td th:text="${iter.count}"></td>
-        <td th:text="${data.id}"></td>
-        <td th:text="${data.tanggal}"></td>
-        <td th:text="deskripsi"></td>
-        <td th:text="${data.pelakuPengecekan}"></td>
-        <td th:text="${data.biaya}"></td>
-    </tr>
-    </tbody>
-</table>
-<h5>Riwayat Maintenance</h5>
-<table id="maintenance-table">
-    <thead>
-    <tr>
-        <th>No</th>
-        <th>ID</th>
-        <th>Tanggal</th>
-        <th>Deskripsi</th>
-        <th>Pelaku Maintenance</th>
-        <th>Biaya Maintenance</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="data, iter: ${listMaintenance}">
-        <td th:text="${iter.count}"></td>
-        <td th:text="${data.id}"></td>
-        <td th:text="${data.tanggalMaintenance}"></td>
-        <td th:text="${data.deskripsi}"></td>
-        <td th:text="${data.pelakuMaintenance}"></td>
-        <td th:text="${data.biaya}"></td>
-    </tr>
-    </tbody>
-</table>
+<div class="container my-4">
+    <div class="card">
+        <div class="card-body">
+            <div class="card-title"><h5>Data Infrastruktur</h5></div>
+            <ul class="list-group">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <strong>ID Infrastruktur</strong>
+                    <div th:text="${infrastruktur.getId()}"></div>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <strong>Nama</strong>
+                    <div th:text="${infrastruktur.getNamaInfrastruktur()}"></div>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <strong>Penanggung Jawab</strong>
+                    <div th:text="${infrastruktur.getPenanggungJawab()}"></div>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <strong>Jenis Infrastruktur</strong>
+                    <div th:text="${infrastruktur.getJenis()}"></div>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <strong>Tanggal Pembangunan</strong>
+                    <div th:text="${infrastruktur.getTanggalPembangunan()}"></div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="container my-4">
+    <div class="card">
+        <div class="card-body">
+            <div class="card-title"><h5>Riwayat Pengecekan</h5></div>
+            <table id="pengecekan-table">
+                <thead>
+                <tr>
+                    <th>No</th>
+                    <th>ID</th>
+                    <th>Tanggal</th>
+                    <th>Deskripsi</th>
+                    <th>Pelaku Pengecekan</th>
+                    <th>Biaya Pengecekan</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="data, iter : ${listPengecekan}">
+                    <td th:text="${iter.count}"></td>
+                    <td th:text="${data.id}"></td>
+                    <td th:text="${data.tanggal}"></td>
+                    <td th:text="deskripsi"></td>
+                    <td th:text="${data.pelakuPengecekan}"></td>
+                    <td th:text="${data.biaya}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="container my-4">
+    <div class="card">
+        <div class="card-body">
+            <div class="card-title"><h5>Riwayat Maintenance</h5></div>
+            <table id="maintenance-table">
+                <thead>
+                <tr>
+                    <th>No</th>
+                    <th>ID</th>
+                    <th>Tanggal</th>
+                    <th>Deskripsi</th>
+                    <th>Pelaku Maintenance</th>
+                    <th>Biaya Maintenance</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="data, iter: ${listMaintenance}">
+                    <td th:text="${iter.count}"></td>
+                    <td th:text="${data.id}"></td>
+                    <td th:text="${data.tanggalMaintenance}"></td>
+                    <td th:text="${data.deskripsi}"></td>
+                    <td th:text="${data.pelakuMaintenance}"></td>
+                    <td th:text="${data.biaya}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
 <script>
     new DataTable('#pengecekan-table');
     new DataTable('#maintenance-table');

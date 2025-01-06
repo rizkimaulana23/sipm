@@ -14,28 +14,37 @@
 </head>
 <body>
 <nav th:replace="~{fragments/navbar :: navbar('infrastruktur')}"></nav>
-<table id="main-table">
-    <thead>
-    <tr>
-        <th>No</th>
-        <th>ID Pasar</th>
-        <th>Nama Pasar</th>
-        <th>Nominal Retribusi</th>
-        <th>Jumlah Infrastruktur</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="pasar, iter : ${listPasar}">
-        <td th:text="${iter.index}"></td>
-        <td th:text="${pasar.id.toString()}"></td>
-        <td>
-            <a th:href="@{|/infrastruktur/${pasar.id}|}" th:text="${pasar.nama}"></a>
-        </td>
-        <td th:text="${pasar.retribusi}"></td>
-        <td th:text="${infrastrukturCount.get(iter.index)}"></td>
-    </tr>
-    </tbody>
-</table>
+
+<div class="container my-4">
+    <div class="card">
+        <div class="card-body">
+            <div class="card-title"><h5>Daftar Pasar</h5></div>
+            <table id="main-table">
+                <thead>
+                <tr>
+                    <th>No</th>
+                    <th>ID Pasar</th>
+                    <th>Nama Pasar</th>
+                    <th>Nominal Retribusi</th>
+                    <th>Jumlah Infrastruktur</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="pasar, iter : ${listPasar}">
+                    <td th:text="${iter.index}"></td>
+                    <td th:text="${pasar.id.toString()}"></td>
+                    <td>
+                        <a th:href="@{|/infrastruktur/${pasar.id}|}" th:text="${pasar.nama}"></a>
+                    </td>
+                    <td th:text="${pasar.retribusi}"></td>
+                    <td th:text="${infrastrukturCount.get(iter.index)}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
 <script>
     new DataTable('#main-table');
 </script>
