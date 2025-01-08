@@ -17,6 +17,19 @@
 <div class="container my-4">
     <div class="card">
         <div class="card-body">
+            <nav aria-label="breadcrumb" style="--bs-breadcrumb-divider: '>';">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item h5"><a href="/stok">Stok</a></li>
+                    <li class="breadcrumb-item h5"><a th:href="@{|/stok/${toko.getPasar().getId()}|}" th:text="${toko.getPasar().getNama()}"></a></li>
+                    <li class="breadcrumb-item active h5" aria-current="page"><span th:text="${toko.getNamaToko()}"></span></li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+</div>
+<div class="container my-4">
+    <div class="card">
+        <div class="card-body">
             <div class="card-title">
                 <h4>Data Toko</h4>
             </div>
@@ -38,6 +51,18 @@
                     <div th:text="${toko.getKontakPenjual()}"></div>
                 </li>
             </ul>
+        </div>
+    </div>
+</div>
+
+<div class="container my-4">
+    <div class="card">
+        <div class="card-body">
+            <div th:each="data : ${mapBarangPokok}">
+                <table>
+
+                </table>
+            </div>
         </div>
     </div>
 </div>

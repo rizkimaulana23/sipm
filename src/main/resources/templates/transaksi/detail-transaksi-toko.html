@@ -16,8 +16,19 @@
 <nav th:replace="~{fragments/navbar :: navbar('transaksi')}"></nav>
 
 <div class="container my-4">
-    <h3><span th:text="${toko.getNamaToko()}"></span> - <span th:text="${toko.getPasar().getNama()}"></span></h3>
+    <div class="card">
+        <div class="card-body">
+            <nav aria-label="breadcrumb" style="--bs-breadcrumb-divider: '>';">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item h5"><a href="/transaksi">Transaksi</a></li>
+                    <li class="breadcrumb-item h5"><a th:text="${toko.getPasar().getNama()}" th:href="@{|/transaksi/${toko.getPasar().getId()}|}"></a></li>
+                    <li class="breadcrumb-item active h5" aria-current="page"><span th:text="${toko.getNamaToko()}"></span></li>
+                </ol>
+            </nav>
+        </div>
+    </div>
 </div>
+
 <div class="container my-4">
     <div class="row g-4">
         <div class="col">

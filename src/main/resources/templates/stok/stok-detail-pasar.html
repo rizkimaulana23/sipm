@@ -28,6 +28,20 @@
 </head>
 <body>
 <nav th:replace="~{fragments/navbar :: navbar('stok')}"></nav>
+
+<div class="container my-4">
+    <div class="card">
+        <div class="card-body">
+            <nav aria-label="breadcrumb" style="--bs-breadcrumb-divider: '>';">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item h5"><a href="/stok">Stok</a></li>
+                    <li class="breadcrumb-item active h5" aria-current="page"><span th:text="${pasar.getNama()}"></span></li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+</div>
+
 <div class="container my-4">
     <div class="card">
         <div class="card-body">

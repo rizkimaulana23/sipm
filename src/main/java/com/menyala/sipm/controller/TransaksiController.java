@@ -78,6 +78,7 @@ public class TransaksiController {
         }
         model.addAttribute("listTotalTransaksi", listTotalTransaksi);
         model.addAttribute("uuid", uuid);
+        model.addAttribute("pasar", pasar);
         return "transaksi/detail-transaksi";
     }
 

@@ -17,8 +17,21 @@
 <div class="container my-4">
     <div class="card">
         <div class="card-body">
+            <nav aria-label="breadcrumb" style="--bs-breadcrumb-divider: '>';">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item h5"><a href="/infrastruktur">Infrastruktur</a></li>
+                    <li class="breadcrumb-item active h5" aria-current="page"><span th:text="${pasar.getNama()}"></span></li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<div class="container my-4">
+    <div class="card">
+        <div class="card-body">
             <div class="card-title">
-                <h5>Data Toko</h5>
+                <h5>Data Pasar</h5>
             </div>
             <ul class="list-group">
                 <li class="list-group-item d-flex justify-content-between align-items-center">

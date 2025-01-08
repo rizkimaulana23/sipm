@@ -3,10 +3,10 @@ package com.menyala.sipm.controller;
 import com.menyala.sipm.model.BarangPokok;
 import com.menyala.sipm.model.Pasar;
 import com.menyala.sipm.model.Toko;
-import com.menyala.sipm.repository.BarangPokokRepo;
 import com.menyala.sipm.repository.PasarRepo;
 import com.menyala.sipm.repository.TokoRepo;
 import com.menyala.sipm.service.BarangPokokService;
+import com.menyala.sipm.service.FormattingService;
 import com.menyala.sipm.service.StokService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,7 +15,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/stok")
@@ -25,7 +28,7 @@ public class StokController {
     private PasarRepo pasarRepo;
 
     @Autowired
-    private BarangPokokRepo barangPokokRepo;
+    private FormattingService formattingService;
 
     @Autowired
     private StokService stokService;
@@ -41,6 +44,7 @@ public class StokController {
         model.addAttribute("listJenisBarang", barangPokokService.getJenisBp());
         model.addAttribute("listPasar", pasarRepo.findAll());
         model.addAttribute("stokService", stokService);
+        model.addAttribute("formattingService", formattingService);
         List<Integer> listStokSetiapPasar = new ArrayList<>();
         return "stok/stok-all-pasar";
     }

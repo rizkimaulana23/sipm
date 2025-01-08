@@ -20,6 +20,19 @@
 <!--<div>-->
 <!--    <canvas id="bar-chart"></canvas>-->
 <!--</div>-->
+
+<div class="container my-4">
+    <div class="card">
+        <div class="card-body">
+            <nav aria-label="breadcrumb" style="--bs-breadcrumb-divider: '>';">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item active h5" aria-current="page"><span>Stok</span></li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+</div>
+
 <div class="container">
     <div class="card">
         <div class="card-body">
@@ -38,8 +51,8 @@
                 <tr th:each="jenisBarang, iter : ${listJenisBarang}">
                     <td th:text="${iter.count}"></td>
                     <td th:text="${jenisBarang}"></td>
-                    <td th:text="${stokService.calculateAverageThisPeriod(jenisBarang)}"></td>
-                    <td th:text="${stokService.calculateAveragePreviousPeriod(jenisBarang)}"></td>
+                    <td th:text="${formattingService.formatStok(stokService.calculateAverageThisPeriod(jenisBarang))}"></td>
+                    <td th:text="${formattingService.formatStok(stokService.calculateAveragePreviousPeriod(jenisBarang))}"></td>
                     <td th:with="result = ${stokService
                             .calculatePercentageDifferent(
                                 stokService.calculateAverageThisPeriod(jenisBarang),
