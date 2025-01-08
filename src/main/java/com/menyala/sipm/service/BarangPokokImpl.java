@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -33,18 +34,31 @@ public class BarangPokokImpl implements BarangPokokService  {
     @Override
     public List<String> getJenisBp() {
         return List.of(
-                "beras",
-                "kedelai",
-                "cabe",
-                "bawang-merah",
+                "Beras",
+                "Kedelai",
+                "Cabe",
+                "Bawang Merah",
                 "Gula",
-                "Minyak-Goreng",
-                "Tepung-Terigu",
-                "Daging-Sapi",
-                "Daging-Ayam-Ras",
-                "Telur-Ayam-Ras",
-                "Ikan-Segar"
+                "Minyak Goreng",
+                "Tepung Terigu",
+                "Daging Sapi",
+                "Daging Ayam Ras",
+                "Telur Ayam Ras",
+                "Ikan Segar"
         );
+    }
+
+    @Override
+    public List<String> getJenisBarangFromToko(UUID idToko) {
+        HashMap<String, JenisBarang> mapJB = new HashMap<>();
+        List<BarangPokok> listBarangPokok = tokoRepo.findById(idToko).get().getListBarangPokok();
+        for (BarangPokok bp : listBarangPokok) {
+            if (!mapJB.containsKey(bp.getJenisBarang().getJenis())) {
+                mapJB.put(bp.getJenisBarang().getJenis(), null);
+            }
+        }
+
+        return new ArrayList<>(mapJB.keySet());
     }
 
     @Override

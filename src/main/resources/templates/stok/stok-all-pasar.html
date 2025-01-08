@@ -20,6 +20,48 @@
 <!--<div>-->
 <!--    <canvas id="bar-chart"></canvas>-->
 <!--</div>-->
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            <div class="card-title h5 d-flex text-center">Jenis Barang</div>
+            <table class="table text-center align-middle">
+                <thead>
+                    <tr>
+                        <th scope="col" class="align-middle">No</th>
+                        <th scope="col" class="align-middle">Jenis Barang</th>
+                        <th scope="col" class="align-middle">Rata-Rata Stok Periode Ini (TANGGAL X - TANGGAL Y)</th>
+                        <th scope="col" class="align-middle">Rata-Rata Stok Periode Kemarin (TANGGAL X - TANGGAL Y)</th>
+                        <th scope="col" class="align-middle">Perubahan Stok</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <tr th:each="jenisBarang, iter : ${listJenisBarang}">
+                    <td th:text="${iter.count}"></td>
+                    <td th:text="${jenisBarang}"></td>
+                    <td th:text="${stokService.calculateAverageThisPeriod(jenisBarang)}"></td>
+                    <td th:text="${stokService.calculateAveragePreviousPeriod(jenisBarang)}"></td>
+                    <td th:with="result = ${stokService
+                            .calculatePercentageDifferent(
+                                stokService.calculateAverageThisPeriod(jenisBarang),
+                                stokService.calculateAveragePreviousPeriod(jenisBarang))}">
+                        <div class="text-center align-middle" th:if="${result.startsWith('-')}">
+                            <img th:src="@{/icons/Arrow Down Red.svg}" alt="Down">
+                            <span th:text="${result}" style="color: red"></span>
+                        </div>
+
+                        <div class="text-center align-middle" th:if="${!result.startsWith('-')}">
+                            <img th:src="@{/icons/Arrow Up Green.svg}" alt="Up">
+                            <span th:text="${result}" style="color:green"></span>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
 <div class="container my-4">
     <div class="card">
         <div class="card-body">
