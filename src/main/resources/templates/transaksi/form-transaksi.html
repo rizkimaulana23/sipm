@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Form Input Transaksi</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<nav th:replace="~{fragments/navbar :: navbar('transakasi')}"></nav>
+<div class="container my-4">
+    <div class="card">
+        <div class="card-body">
+            <nav aria-label="breadcrumb" style="--bs-breadcrumb-divider: '>';">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item h5"><a href="/transaksi">Transaksi</a></li>
+                    <li class="breadcrumb-item h5"><a th:href="@{|/transaksi/${pasar.getId()}|}" th:text="${pasar.getNama()}"></a></li>
+                    <li class="breadcrumb-item active h5"><span>Input Transaksi</span></li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="card">
+        <form th:action="@{|/transaksi/${pasar.getId()}/input-transaksi|}" method="POST"></form>
+        <div class="card-body">
+            <label for="idToko">Toko</label>
+            <select name="idToko" id="idToko" class="form-select">
+                <option selected value="">Pilih toko</option>
+                <option th:each="toko: ${listToko}" th:text="${toko.getNamaToko()}" th:value="${toko.getId()}"></option>
+            </select>
+            <button class="btn btn-primary" type="submit" name="add">
+                Tambah Toko
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="container my-4">
+    <div class="card">
+        <div class="card-body">
+            <div class="card-title h4">
+                Daftar Toko
+            </div>
+            <div th:each="entry : ${mapTokoTransaksi}" class="col-md-4 mb-4">
+                <a class="card h-100 hover-card">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${entry.key}"></h5>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span>Tanggal Transaksi</span>
+                                <span>Pendapatan Harian</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center"
+                                th:each="transaksi : ${entry.value}">
+                                <input type="date" >
+                                <span th:text="${transaksi.getPendapatanHarian()}"></span>
+                            </li>
+                        </ul>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
