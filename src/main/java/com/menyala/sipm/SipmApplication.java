@@ -138,6 +138,7 @@ public class SipmApplication {
 //						pengecekanDTO.setTanggal(faker.date().between(fromDate, toDate)); // Tanggal acak
 //						pengecekanDTO.setBiaya(faker.number().numberBetween(1000L, 5000L)); // Biaya acak
 //						pengecekanDTO.setPelakuPengecekan(faker.name().fullName()); // Nama pelaku pengecekan
+//						pengecekanDTO.setDeskripsi(faker.lorem().sentence());
 //						var cek =  infrastrukturService.addPengecekan(pengecekanDTO);
 //						log.info("KONTOL");
 //						log.info(cek.getInfrastruktur().getId().toString());
@@ -158,6 +159,7 @@ public class SipmApplication {
 //			}
 //		};
 //	}
+
 	private Long retributionGenerator() {
 		long min = 1700;
 		long max = 2500;
