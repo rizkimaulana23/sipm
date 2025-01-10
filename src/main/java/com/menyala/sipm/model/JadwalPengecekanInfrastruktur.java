@@ -22,6 +22,8 @@ public class JadwalPengecekanInfrastruktur {
 
     private Long biaya;
 
+    private String deskripsi;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_infrastruktur", referencedColumnName = "id")
     private Infrastruktur infrastruktur;

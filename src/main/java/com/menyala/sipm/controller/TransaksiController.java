@@ -1,6 +1,6 @@
 package com.menyala.sipm.controller;
 
-import com.menyala.sipm.dto.Toko.AddTransaksiDTO;
+import com.menyala.sipm.dto.transaksi.FormTransaksiDTO;
 import com.menyala.sipm.model.Pasar;
 import com.menyala.sipm.model.Toko;
 import com.menyala.sipm.model.Transaksi;
@@ -16,7 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -99,7 +99,11 @@ public class TransaksiController {
     @GetMapping("/{id}/input-transaksi")
     public String inputTransaksi(Model model, @PathVariable("id") UUID uuid) {
         Pasar pasar = pasarRepo.findById(uuid).orElse(null);
-        model.addAttribute("mapTokoTransaksi", new HashMap<UUID, List<AddTransaksiDTO>>());
+        FormTransaksiDTO dto = new FormTransaksiDTO();
+        dto.setTanggal(new Date());
+        dto.setListToko(new ArrayList<>());
+        dto.setListPendapatan(new ArrayList<>());
+        model.addAttribute("dto", dto);
         model.addAttribute("pasar", pasar);
         model.addAttribute("listToko", tokoRepo.findAllByPasar(pasar));
         return "transaksi/form-transaksi";
@@ -107,12 +111,19 @@ public class TransaksiController {
 
     @PostMapping(value = "/{id}/input-transaksi", params = {"add"})
     public String addNewTokoInputTransaksi(Model model, @PathVariable("id") UUID uuid,
-                                           @ModelAttribute HashMap<UUID, List<AddTransaksiDTO>> map,
+                                           @ModelAttribute FormTransaksiDTO dto,
                                            @RequestParam("idToko") UUID idToko) {
-        if (!map.containsKey(idToko)) {
-            map.put(idToko, new ArrayList<>());
+        if(dto.getListToko() == null) {
+            dto.setListToko(new ArrayList<>());
+            dto.setListPendapatan(new ArrayList<>());
         }
-        model.addAttribute("mapTokoTransaksi", map);
+
+        if(!checkTokoDuplicate(idToko, dto.getListToko())) {
+            dto.getListToko().add(tokoRepo.findById(idToko).orElse(null));
+            dto.getListPendapatan().add(0L);
+        }
+
+        model.addAttribute("dto", dto);
 
         Pasar pasar = pasarRepo.findById(uuid).orElse(null);
         model.addAttribute("pasar", pasar);
@@ -122,52 +133,29 @@ public class TransaksiController {
 
     @PostMapping(value = "/{id}/input-transaksi", params = {"delete"})
     public String deleteTokoInputTransaksi (Model model, @PathVariable("id") UUID uuid,
-                                            @ModelAttribute HashMap<UUID, List<AddTransaksiDTO>> map,
-                                            @RequestParam("idToko") UUID idToko) {
-        map.remove(idToko);
+                                            @ModelAttribute("dto") FormTransaksiDTO dto,
+                                            @RequestParam("delete") int row ) {
+        dto.getListToko().remove(row);
+        dto.getListPendapatan().remove(row);
         Pasar pasar = pasarRepo.findById(uuid).orElse(null);
         model.addAttribute("pasar", pasar);
         model.addAttribute("listToko", tokoRepo.findAllByPasar(pasar));
-        model.addAttribute("mapTokoTransaksi", map);
-        return "transaksi/form-transaksi";
-    }
-
-    @PostMapping(value = "/{id}/input-transaksi", params = {"addTransaksi"})
-    public String addTransaksiTokoInputTransaksi(Model model, @PathVariable("id") UUID uuid,
-                                                 @ModelAttribute HashMap<UUID, List<AddTransaksiDTO>> map,
-                                                 @RequestParam("dto") AddTransaksiDTO dto) {
-        if (!map.containsKey(uuid)) {
-            map.put(uuid, new ArrayList<>());
-        }
-        map.get(uuid).add(dto);
-        model.addAttribute("mapTokoTransaksi", map);
-
-        Pasar pasar = pasarRepo.findById(uuid).orElse(null);
-        model.addAttribute("pasar", pasar);
-        model.addAttribute("listToko", tokoRepo.findAllByPasar(pasar));
-        return "transaksi/form-transaksi";
-    }
-
-    @PostMapping(value = "/{id}/input-transaksi", params = {"deleteTransaksi"})
-    public String deleteTransaksiTokoInputTransaksi(Model model, @PathVariable("id") UUID uuid,
-                                                    @ModelAttribute HashMap<UUID, List<AddTransaksiDTO>> map,
-                                                    @RequestParam("idToko") UUID idToko,
-                                                    @RequestParam("row") int row) {
-        map.get(idToko).remove(row);
-        model.addAttribute("mapTokoTransaksi", map);
-
-        Pasar pasar = pasarRepo.findById(uuid).orElse(null);
-        model.addAttribute("pasar", pasar);
-
-        model.addAttribute("listToko", tokoRepo.findAllByPasar(pasar));
+        model.addAttribute("dto", dto);
         return "transaksi/form-transaksi";
     }
 
 
     @PostMapping("/{id}/input-transaksi")
     public String submitInputTransaksi(@PathVariable("id") UUID uuid,
-                                       @ModelAttribute HashMap<UUID, List<AddTransaksiDTO>> map) {
-        transaksiService.saveTransaksiService(map);
+                                       @ModelAttribute FormTransaksiDTO dto) {
+        transaksiService.saveTransaksiService(dto);
         return "redirect:/transaksi/" + uuid;
+    }
+
+    private boolean checkTokoDuplicate(UUID uuid, List<Toko> list) {
+        for (Toko toko: list) {
+            if (toko.getId().toString().equals(uuid.toString())) return true;
+        }
+        return false;
     }
 }
