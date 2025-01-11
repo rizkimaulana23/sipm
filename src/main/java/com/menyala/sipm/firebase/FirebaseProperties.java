@@ -1,8 +1,10 @@
 package com.menyala.sipm.firebase;
 
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+@Getter
 @Component
 public class FirebaseProperties {
 
@@ -27,32 +29,4 @@ public class FirebaseProperties {
     @Value("${firebase.measurementId}")
     private String measurementId;
 
-
-    public String getApiKey() {
-        return apiKey;
-    }
-
-    public String getAuthDomain() {
-        return authDomain;
-    }
-
-    public String getProjectId() {
-        return projectId;
-    }
-
-    public String getStorageBucket() {
-        return storageBucket;
-    }
-
-    public String getMessagingSenderId() {
-        return messagingSenderId;
-    }
-
-    public String getAppId() {
-        return appId;
-    }
-
-    public String getMeasurementId() {
-        return measurementId;
-    }
 }
