@@ -1,5 +1,7 @@
 package com.menyala.sipm.controller;
 
+import com.menyala.sipm.dto.infrastruktur.AddMaintenanceInfrastrukturDTO;
+import com.menyala.sipm.dto.infrastruktur.AddPengecekanInfrastrukturDTO;
 import com.menyala.sipm.model.Infrastruktur;
 import com.menyala.sipm.model.JadwalMaintenanceInfrastruktur;
 import com.menyala.sipm.model.JadwalPengecekanInfrastruktur;
@@ -7,12 +9,11 @@ import com.menyala.sipm.model.Pasar;
 import com.menyala.sipm.repository.BackOrderRepo;
 import com.menyala.sipm.repository.InfrastrukturRepo;
 import com.menyala.sipm.repository.PasarRepo;
+import com.menyala.sipm.service.InfrastrukturService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -31,6 +32,9 @@ public class InfrastrukturController {
 
     @Autowired
     private BackOrderRepo backOrderRepo;
+
+    @Autowired
+    private InfrastrukturService infrastrukturService;
 
     @GetMapping("")
     public String allPasar(Model model) {
@@ -72,4 +76,42 @@ public class InfrastrukturController {
         model.addAttribute("infrastruktur", infrastruktur);
         return "infrastruktur/detail-nama-infrastruktur";
     }
+
+
+    @GetMapping("/detail/{id}/input-pengecekan")
+    public String inputPengecekan(Model model, @PathVariable("id") UUID id) {
+        Infrastruktur infrastruktur = infrastrukturRepo.findById(id).orElse(null);
+        Pasar pasar = pasarRepo.findById(infrastruktur.getPasar().getId()).orElse(null);
+        AddPengecekanInfrastrukturDTO dto = new AddPengecekanInfrastrukturDTO();
+        dto.setInfrastrukturID(id);
+        model.addAttribute("pasar", pasar);
+        model.addAttribute("infrastruktur", infrastruktur);
+        model.addAttribute("dto", dto);
+        return "infrastruktur/input-pengecekan";
+    }
+
+    @PostMapping("/detail/{id}/input-pengecekan")
+    public String inputPengecekan(Model model, @PathVariable("id") UUID id, @ModelAttribute AddPengecekanInfrastrukturDTO dto) {
+        infrastrukturService.addPengecekan(dto);
+        return "redirect:/infrastruktur/detail/" + id;
+    }
+
+    @GetMapping("/detail/{id}/input-maintenance")
+    public String inputMaintenance(Model model, @PathVariable("id") UUID id) {
+        Infrastruktur infrastruktur = infrastrukturRepo.findById(id).orElse(null);
+        Pasar pasar = pasarRepo.findById(infrastruktur.getPasar().getId()).orElse(null);
+        AddMaintenanceInfrastrukturDTO dto = new AddMaintenanceInfrastrukturDTO();
+        dto.setInfrastrukturID(id);
+        model.addAttribute("pasar", pasar);
+        model.addAttribute("infrastruktur", infrastruktur);
+        model.addAttribute("dto", dto);
+        return "infrastruktur/input-maintenance";
+    }
+
+    @PostMapping("/detail/{id}/input-maintenance")
+    public String inputMaintenance(Model model, @PathVariable("id") UUID id, @ModelAttribute AddMaintenanceInfrastrukturDTO dto) {
+        infrastrukturService.addMaintenance(dto);
+        return "redirect:/infrastruktur/detail/" + id;
+    }
+
 }

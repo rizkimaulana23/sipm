@@ -5,7 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Detail Infrastruktur</title>
+    <title>Input Maintenance Infrastruktur</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.css">
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
@@ -21,7 +21,8 @@
                 <ol class="breadcrumb mb-0">
                     <li class="breadcrumb-item h5"><a href="/infrastruktur">Infrastruktur</a></li>
                     <li class="breadcrumb-item h5"><a th:href="@{|/infrastruktur/${infrastruktur.getPasar().getId()}|}" th:text="${infrastruktur.getPasar().getNama()}"></a></li>
-                    <li class="breadcrumb-item active h5" aria-current="page" ><span th:text="${infrastruktur.getNamaInfrastruktur()}"></span></li>
+                    <li class="breadcrumb-item h5"><a th:href="@{|/infrastruktur/detail/${infrastruktur.getId()}|}" th:text="${infrastruktur.getNamaInfrastruktur()}"></a></li>
+                    <li class="breadcrumb-item active h5" aria-current="page"><span>Input Maintenance</span></li>
                 </ol>
             </nav>
         </div>
@@ -59,69 +60,35 @@
 
 <div class="container my-4">
     <div class="card">
-        <div class="card-body">
-            <div class="card-title"><h5>Riwayat Pengecekan</h5></div>
-            <a th:href="@{|/infrastruktur/detail/${infrastruktur.getId()}/input-pengecekan|}" class="btn btn-primary container my-3">Input Pengecekan</a>
-            <table id="pengecekan-table">
-                <thead>
-                <tr>
-                    <th>No</th>
-                    <th>ID</th>
-                    <th>Tanggal</th>
-                    <th>Deskripsi</th>
-                    <th>Pelaku Pengecekan</th>
-                    <th>Biaya Pengecekan</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="data, iter : ${listPengecekan}">
-                    <td th:text="${iter.count}"></td>
-                    <td th:text="${data.id}"></td>
-                    <td th:text="${data.tanggal}"></td>
-                    <td th:text="${data.deskripsi}"></td>
-                    <td th:text="${data.pelakuPengecekan}"></td>
-                    <td th:text="${data.biaya}"></td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
+        <form th:action="@{|/infrastruktur/detail/${infrastruktur.id}/input-maintenance|}" method="POST" th:object="${dto}">
+            <div class="card-body">
+                <div class="card-title h5">Input Maintenance</div>
+                <input type="text" class="form-control" th:field="*{infrastrukturID}" style="display: none">
+
+                <div class="my-1">
+                    <label for="tanggal">Tanggal</label>
+                    <input type="date" class="form-control" th:field="*{tanggal}" id="tanggal">
+                </div>
+
+                <div class="my-1">
+                    <label for="biaya">Biaya Maintenance</label>
+                    <input type="number" class="form-control" th:field="*{biaya}" id="biaya">
+                </div>
+
+                <div class="my-1">
+                    <label for="pelaku">Pelaku Maintenance</label>
+                    <input type="text" class="form-control" th:field="*{pelakuMaintenance}" id="pelaku">
+                </div>
+
+                <div class="my-1">
+                    <label for="deskripsi">Deskripsi</label>
+                    <textarea class="form-control" th:field="*{deskripsi}" id="deskripsi"></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary container mt-1">Kirim</button>
+            </div>
+        </form>
     </div>
 </div>
-
-<div class="container my-4">
-    <div class="card">
-        <div class="card-body">
-            <div class="card-title"><h5>Riwayat Maintenance</h5></div>
-            <a th:href="@{|/infrastruktur/detail/${infrastruktur.getId()}/input-maintenance|}" class="btn btn-primary container my-3">Input Maintenance</a>
-            <table id="maintenance-table">
-                <thead>
-                <tr>
-                    <th>No</th>
-                    <th>ID</th>
-                    <th>Tanggal</th>
-                    <th>Deskripsi</th>
-                    <th>Pelaku Maintenance</th>
-                    <th>Biaya Maintenance</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="data, iter: ${listMaintenance}">
-                    <td th:text="${iter.count}"></td>
-                    <td th:text="${data.id}"></td>
-                    <td th:text="${data.tanggalMaintenance}"></td>
-                    <td th:text="${data.deskripsi}"></td>
-                    <td th:text="${data.pelakuMaintenance}"></td>
-                    <td th:text="${data.biaya}"></td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-
-<script>
-    new DataTable('#pengecekan-table');
-    new DataTable('#maintenance-table');
-</script>
 </body>
 </html>

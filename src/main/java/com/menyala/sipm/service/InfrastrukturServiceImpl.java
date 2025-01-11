@@ -86,6 +86,7 @@ public class InfrastrukturServiceImpl implements InfrastrukturService {
         JadwalPengecekanInfrastruktur jadwal = new JadwalPengecekanInfrastruktur();
         jadwal.setId(UUID.randomUUID());
         jadwal.setInfrastruktur(infrastrukturRepo.findById(dto.getInfrastrukturID()).orElse(null));
+        jadwal.setDeskripsi(dto.getDeskripsi());
         jadwal.setTanggal(dto.getTanggal());
         jadwal.setBiaya(dto.getBiaya());
         jadwal.setPelakuPengecekan(dto.getPelakuPengecekan());
