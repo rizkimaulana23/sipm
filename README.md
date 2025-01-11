@@ -1,4 +1,4 @@
-# sipm
+# sipm furebaseTest branch
 
 11 januari 2025, inisialisasi dan konfigurasi -firebase init.
   - "file aplication.properties" dimasukkan token2 yang merupakan identitas dari server firebase storage
