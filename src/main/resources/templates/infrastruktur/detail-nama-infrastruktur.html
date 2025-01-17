@@ -71,6 +71,9 @@
                     <th>Deskripsi</th>
                     <th>Pelaku Pengecekan</th>
                     <th>Biaya Pengecekan</th>
+                    <th>Hapus</th>
+                    <th>Edit</th>
+
                 </tr>
                 </thead>
                 <tbody>
@@ -81,9 +84,18 @@
                     <td th:text="${data.deskripsi}"></td>
                     <td th:text="${data.pelakuPengecekan}"></td>
                     <td th:text="${data.biaya}"></td>
+                    <td>
+                        <form th:action="@{|/infrastruktur/detail/delete/${data.id}/${infrastruktur.getId()}|}" method="post">
+                            <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
+                        </form>
+                    </td>
+                    <td>
+                        <a th:href="@{/infrastruktur/pengecekan/edit/{id}(id=${data.id})}" class="btn btn-warning btn-sm">Edit</a>
+                    </td>
                 </tr>
                 </tbody>
             </table>
+
         </div>
     </div>
 </div>
