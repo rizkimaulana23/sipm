@@ -10,6 +10,7 @@ import com.menyala.sipm.repository.InfrastrukturRepo;
 import com.menyala.sipm.repository.JadwalMaintenanceInfrastrukturRepo;
 import com.menyala.sipm.repository.JadwalPengecekanInfrastrukturRepo;
 import com.menyala.sipm.repository.PasarRepo;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -92,4 +93,12 @@ public class InfrastrukturServiceImpl implements InfrastrukturService {
         jadwal.setPelakuPengecekan(dto.getPelakuPengecekan());
         return jadwalPengecekanInfrastrukturRepo.save(jadwal);
     }
+
+    @Override
+    @Transactional
+    public void deletePengecekan(UUID pengecekanID){
+        jadwalPengecekanInfrastrukturRepo.deleteJadwalPengecekanInfrastrukturById(pengecekanID);
+    }
+
+
 }
