@@ -10,7 +10,9 @@ import com.menyala.sipm.repository.BackOrderRepo;
 import com.menyala.sipm.repository.InfrastrukturRepo;
 import com.menyala.sipm.repository.PasarRepo;
 import com.menyala.sipm.service.InfrastrukturService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -109,9 +111,18 @@ public class InfrastrukturController {
     }
 
     @PostMapping("/detail/{id}/input-maintenance")
-    public String inputMaintenance(Model model, @PathVariable("id") UUID id, @ModelAttribute AddMaintenanceInfrastrukturDTO dto) {
+    public String inputMaintenance(@PathVariable("id") UUID id, @ModelAttribute AddMaintenanceInfrastrukturDTO dto) {
         infrastrukturService.addMaintenance(dto);
         return "redirect:/infrastruktur/detail/" + id;
     }
+
+
+    @PostMapping("/detail/delete/{id1}/{id2}")
+    public String deletePengecekan(@PathVariable UUID id2, @PathVariable UUID id1) {
+        infrastrukturService.deletePengecekan(id1);
+        return "redirect:/infrastruktur/detail/" + id2;
+    }
+
+
 
 }
