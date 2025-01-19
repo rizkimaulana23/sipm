@@ -48,6 +48,9 @@
                     </tr>
                 </thead>
                 <tbody>
+                <tr th:if="${listJenisBarang.isEmpty()}">
+                    <td colspan="5" style="text-align: center;">Tidak ada data pasar yang tersedia.</td>
+                </tr>
                 <tr th:each="jenisBarang, iter : ${listJenisBarang}">
                     <td th:text="${iter.count}"></td>
                     <td th:text="${jenisBarang}"></td>
@@ -89,6 +92,9 @@
                 </tr>
                 </thead>
                 <tbody>
+                <tr th:if="${listPasar.isEmpty()}">
+                    <td colspan="5" style="text-align: center;">Tidak ada data pasar yang tersedia.</td>
+                </tr>
                 <tr th:each="data, iter : ${listPasar}">
                     <td th:text="${iter.count}"></td>
                     <td>

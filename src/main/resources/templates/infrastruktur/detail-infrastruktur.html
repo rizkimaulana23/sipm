@@ -76,6 +76,9 @@
                 </tr>
                 </thead>
                 <tbody>
+                <tr th:if="${listInfrastruktur.isEmpty()}">
+                    <td colspan="5" style="text-align: center;">Tidak ada data pasar yang tersedia.</td>
+                </tr>
                 <tr th:each="infrastruktur, iter : ${listInfrastruktur}">
                     <td th:text="${iter.count}"></td>
                     <td th:text="${infrastruktur.getJenis()}"></td>
@@ -108,6 +111,10 @@
                 </tr>
                 </thead>
                 <tbody>
+                <tr th:if="${listBackOrder.isEmpty()}">
+                    <td colspan="5" style="text-align: center;">Tidak ada data pasar yang tersedia.</td>
+                </tr>
+
                 <tr th:each="data, iter : ${listBackOrder}">
                     <td th:text="${iter.count}"></td>
                     <td th:text="${data.id}"></td>
