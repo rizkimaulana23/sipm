@@ -43,9 +43,6 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:if="${listPasar.isEmpty()}">
-                    <td colspan="5" style="text-align: center;">Tidak ada data pasar yang tersedia.</td>
-                </tr>
                 <tr th:each="pasar, iter : ${listPasar}">
                     <td th:text="${iter.index}"></td>
                     <td th:text="${pasar.id.toString()}"></td>
