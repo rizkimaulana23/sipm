@@ -53,20 +53,40 @@ public class InfrastrukturController {
     @GetMapping("/{id}")
     public String detailPasar(Model model, @PathVariable("id") UUID id) {
         Pasar pasar = pasarRepo.findById(id).orElse(null);
+        if (pasar == null) {
+            model.addAttribute("error", "Pasar tidak ditemukan");
+            return "error";
+        }
+
         List<Infrastruktur> listInfrastruktur = infrastrukturRepo.findAllByPasar(pasar);
         model.addAttribute("listInfrastruktur", listInfrastruktur);
         model.addAttribute("pasar", pasar);
+
         List<Date> listMaintenance = new ArrayList<>();
         List<Date> listPengecekan = new ArrayList<>();
+
         for (Infrastruktur i : listInfrastruktur) {
-            listMaintenance.add(i.getListJadwalMaintenanceInfrastruktur().getLast().getTanggalMaintenance());
-            listPengecekan.add(i.getListJadwalPengecekanInfrastruktur().getLast().getTanggal());
+            // Handle list maintenance
+            if (!i.getListJadwalMaintenanceInfrastruktur().isEmpty()) {
+                listMaintenance.add(i.getListJadwalMaintenanceInfrastruktur().getLast().getTanggalMaintenance());
+            } else {
+                listMaintenance.add(null); // Atau skip penambahan jika tidak ingin nilai null
+            }
+
+            // Handle list pengecekan
+            if (!i.getListJadwalPengecekanInfrastruktur().isEmpty()) {
+                listPengecekan.add(i.getListJadwalPengecekanInfrastruktur().getLast().getTanggal());
+            } else {
+                listPengecekan.add(null); // Atau skip penambahan jika tidak ingin nilai null
+            }
         }
+
         model.addAttribute("listMaintenance", listMaintenance);
         model.addAttribute("listPengecekan", listPengecekan);
         model.addAttribute("listBackOrder", backOrderRepo.findAllByPasar(pasar));
         return "infrastruktur/detail-infrastruktur";
     }
+
 
     @GetMapping("/detail/{id}")
     public String detailInfrastruktur(Model model, @PathVariable("id") UUID id) {
