@@ -137,12 +137,16 @@ public class InfrastrukturController {
     }
 
 
-    @PostMapping("/detail/delete/{id1}/{id2}")
+    @PostMapping("/pengecekan/delete/{id1}/{id2}")
     public String deletePengecekan(@PathVariable UUID id2, @PathVariable UUID id1) {
         infrastrukturService.deletePengecekan(id1);
         return "redirect:/infrastruktur/detail/" + id2;
     }
 
-
+    @PostMapping("/maintenance/delete/{id1}/{id2}")
+    public String deleteMaintenance(@PathVariable UUID id2, @PathVariable UUID id1) {
+        infrastrukturService.deleteMaintenance(id1);
+        return "redirect:/infrastruktur/detail/" + id2;
+    }
 
 }
