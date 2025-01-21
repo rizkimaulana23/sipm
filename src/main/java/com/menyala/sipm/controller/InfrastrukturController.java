@@ -10,7 +10,9 @@ import com.menyala.sipm.repository.BackOrderRepo;
 import com.menyala.sipm.repository.InfrastrukturRepo;
 import com.menyala.sipm.repository.PasarRepo;
 import com.menyala.sipm.service.InfrastrukturService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -51,20 +53,40 @@ public class InfrastrukturController {
     @GetMapping("/{id}")
     public String detailPasar(Model model, @PathVariable("id") UUID id) {
         Pasar pasar = pasarRepo.findById(id).orElse(null);
+        if (pasar == null) {
+            model.addAttribute("error", "Pasar tidak ditemukan");
+            return "error";
+        }
+
         List<Infrastruktur> listInfrastruktur = infrastrukturRepo.findAllByPasar(pasar);
         model.addAttribute("listInfrastruktur", listInfrastruktur);
         model.addAttribute("pasar", pasar);
+
         List<Date> listMaintenance = new ArrayList<>();
         List<Date> listPengecekan = new ArrayList<>();
+
         for (Infrastruktur i : listInfrastruktur) {
-            listMaintenance.add(i.getListJadwalMaintenanceInfrastruktur().getLast().getTanggalMaintenance());
-            listPengecekan.add(i.getListJadwalPengecekanInfrastruktur().getLast().getTanggal());
+            // Handle list maintenance
+            if (!i.getListJadwalMaintenanceInfrastruktur().isEmpty()) {
+                listMaintenance.add(i.getListJadwalMaintenanceInfrastruktur().getLast().getTanggalMaintenance());
+            } else {
+                listMaintenance.add(null); // Atau skip penambahan jika tidak ingin nilai null
+            }
+
+            // Handle list pengecekan
+            if (!i.getListJadwalPengecekanInfrastruktur().isEmpty()) {
+                listPengecekan.add(i.getListJadwalPengecekanInfrastruktur().getLast().getTanggal());
+            } else {
+                listPengecekan.add(null); // Atau skip penambahan jika tidak ingin nilai null
+            }
         }
+
         model.addAttribute("listMaintenance", listMaintenance);
         model.addAttribute("listPengecekan", listPengecekan);
         model.addAttribute("listBackOrder", backOrderRepo.findAllByPasar(pasar));
         return "infrastruktur/detail-infrastruktur";
     }
+
 
     @GetMapping("/detail/{id}")
     public String detailInfrastruktur(Model model, @PathVariable("id") UUID id) {
@@ -109,9 +131,22 @@ public class InfrastrukturController {
     }
 
     @PostMapping("/detail/{id}/input-maintenance")
-    public String inputMaintenance(Model model, @PathVariable("id") UUID id, @ModelAttribute AddMaintenanceInfrastrukturDTO dto) {
+    public String inputMaintenance(@PathVariable("id") UUID id, @ModelAttribute AddMaintenanceInfrastrukturDTO dto) {
         infrastrukturService.addMaintenance(dto);
         return "redirect:/infrastruktur/detail/" + id;
+    }
+
+
+    @PostMapping("/pengecekan/delete/{id1}/{id2}")
+    public String deletePengecekan(@PathVariable UUID id2, @PathVariable UUID id1) {
+        infrastrukturService.deletePengecekan(id1);
+        return "redirect:/infrastruktur/detail/" + id2;
+    }
+
+    @PostMapping("/maintenance/delete/{id1}/{id2}")
+    public String deleteMaintenance(@PathVariable UUID id2, @PathVariable UUID id1) {
+        infrastrukturService.deleteMaintenance(id1);
+        return "redirect:/infrastruktur/detail/" + id2;
     }
 
 }
