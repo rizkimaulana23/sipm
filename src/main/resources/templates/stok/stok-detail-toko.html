@@ -11,6 +11,20 @@
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .table th {
+            width: 10%;
+        }
+        .table th:nth-child(2) {
+            width: 30%;
+        }
+        .table th:nth-child(3),
+        .table th:nth-child(4),
+        .table th:nth-child(5) {
+            width: 20%;
+        }
+    </style>
+
 </head>
 <body>
 <nav th:replace="~{fragments/navbar :: navbar('stok')}"></nav>
@@ -58,19 +72,66 @@
 <div class="container my-4">
     <div class="card">
         <div class="card-body">
-            <div th:each="data : ${mapBarangPokok}">
-                <table>
-
-                </table>
+            <div class="card-title">
+                <h4>Filter Jenis Barang</h4>
+            </div>
+            <div class="row">
+                <div class="col-md-4 col-sm-6 col-12 mb-2" th:each="jenisBarang : ${listJenisBarang}">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" th:attr="id=${'filter-' + jenisBarang}" th:value="${jenisBarang}" checked>
+                        <label class="form-check-label" th:attr="for=${'filter-' + jenisBarang}" th:text="${jenisBarang}"></label>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 
-<script>
+<div class="container my-4">
+    <div class="card">
+        <div class="card-body">
+            <div th:each="data, iter : ${mapBarangPokok}" class="container my-1" th:attr="id=${'section-' + data.key}">
+                <span class="h5" th:text="${data.key}"></span>
+                <table class="table text-center align-middle"  style="table-layout: fixed;">
+                    <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Nama</th>
+                        <th>Stok</th>
+                        <th>Tanggal Kadaluarsa</th>
+                        <th>Tanggal Masuk</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="barang, iters : ${data.getValue()}">
+                        <td th:text="${iters.count}"></td>
+                        <td th:text="${barang.nama}"></td>
+                        <td th:text="${barang.stok}"></td>
+                        <td th:text="${barang.tanggalKadaluarsa}"></td>
+                        <td th:text="${barang.tanggalMasuk}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 
+<script>
+    $(document).ready(function() {
+        $('.form-check-input').on('change', function() {
+            const jenisBarang = $(this).val();
+            const sectionId = '#section-' + jenisBarang;
+            if ($(this).is(':checked')) {
+                $(sectionId).show();
+            } else {
+                $(sectionId).hide();
+            }
+        });
+    });
 </script>
+
 
 </body>
 </html>

@@ -1,8 +1,6 @@
 package com.menyala.sipm.service;
 
-import com.menyala.sipm.dto.infrastruktur.AddInfrastrukturDTO;
-import com.menyala.sipm.dto.infrastruktur.AddMaintenanceInfrastrukturDTO;
-import com.menyala.sipm.dto.infrastruktur.AddPengecekanInfrastrukturDTO;
+import com.menyala.sipm.dto.infrastruktur.*;
 import com.menyala.sipm.model.Infrastruktur;
 import com.menyala.sipm.model.JadwalMaintenanceInfrastruktur;
 import com.menyala.sipm.model.JadwalPengecekanInfrastruktur;
@@ -10,6 +8,7 @@ import com.menyala.sipm.repository.InfrastrukturRepo;
 import com.menyala.sipm.repository.JadwalMaintenanceInfrastrukturRepo;
 import com.menyala.sipm.repository.JadwalPengecekanInfrastrukturRepo;
 import com.menyala.sipm.repository.PasarRepo;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -92,4 +91,45 @@ public class InfrastrukturServiceImpl implements InfrastrukturService {
         jadwal.setPelakuPengecekan(dto.getPelakuPengecekan());
         return jadwalPengecekanInfrastrukturRepo.save(jadwal);
     }
+
+    @Override
+    public JadwalMaintenanceInfrastruktur updateMaintenance(UpdateMaintenanceInfrastrukturDTO dto) {
+        JadwalMaintenanceInfrastruktur maintenance = jadwalMaintenanceInfrastrukturRepo.findById(dto.getId()).orElse(null);
+        if (maintenance != null) {
+            maintenance.setBiaya(dto.getBiaya());
+            maintenance.setDeskripsi(dto.getDeskripsi());
+            maintenance.setPelakuMaintenance(dto.getPelakuMaintenance());
+            maintenance.setTanggalMaintenance(dto.getTanggal());
+            jadwalMaintenanceInfrastrukturRepo.save(maintenance);
+        }
+        return maintenance;
+    }
+
+    @Override
+    public JadwalPengecekanInfrastruktur updatePengecekan(UpdatePengecekanInfrastrukturDTO dto) {
+        JadwalPengecekanInfrastruktur pengecekan = jadwalPengecekanInfrastrukturRepo.findById(dto.getId()).orElse(null);
+        if (pengecekan != null) {
+            pengecekan.setBiaya(dto.getBiaya());
+            pengecekan.setDeskripsi(dto.getDeskripsi());
+            pengecekan.setTanggal(dto.getTanggal());
+            pengecekan.setPelakuPengecekan(dto.getPelakuPengecekan());
+            jadwalPengecekanInfrastrukturRepo.save(pengecekan);
+        }
+        return pengecekan;
+    }
+
+    @Override
+    @Transactional
+    public void deletePengecekan(UUID pengecekanID){
+        jadwalPengecekanInfrastrukturRepo.deleteJadwalPengecekanInfrastrukturById(pengecekanID);
+    }
+
+    @Override
+    @Transactional
+    public void deleteMaintenance(UUID maintenanceID){
+        jadwalMaintenanceInfrastrukturRepo.deleteJadwalMaintenanceInfrastrukturById(maintenanceID);
+    }
+
+
+
 }

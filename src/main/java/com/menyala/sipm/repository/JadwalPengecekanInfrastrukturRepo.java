@@ -6,4 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.UUID;
 
 public interface JadwalPengecekanInfrastrukturRepo extends JpaRepository<JadwalPengecekanInfrastruktur, UUID> {
+    void deleteJadwalPengecekanInfrastrukturById(UUID id);
+    JadwalPengecekanInfrastruktur findJadwalPengecekanInfrastrukturById(UUID id);
 }
