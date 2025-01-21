@@ -34,17 +34,17 @@ public class BarangPokokImpl implements BarangPokokService  {
     @Override
     public List<String> getJenisBp() {
         return List.of(
-                "Beras",
-                "Kedelai",
-                "Cabe",
-                "Bawang Merah",
-                "Gula",
-                "Minyak Goreng",
-                "Tepung Terigu",
-                "Daging Sapi",
-                "Daging Ayam Ras",
-                "Telur Ayam Ras",
-                "Ikan Segar"
+                "beras",
+                "kedelai",
+                "cabe",
+                "bawang-merah",
+                "gula",
+                "minyak-goreng",
+                "tepung-terigu",
+                "daging-sapi",
+                "daging-ayam-ras",
+                "telur-ayam-ras",
+                "ikan-segar"
         );
     }
 
