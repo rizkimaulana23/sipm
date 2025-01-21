@@ -15,5 +15,5 @@ public interface InfrastrukturService {
     JadwalMaintenanceInfrastruktur addMaintenance(AddMaintenanceInfrastrukturDTO dto);
     JadwalPengecekanInfrastruktur addPengecekan(AddPengecekanInfrastrukturDTO dto);
     void deletePengecekan(UUID pengecekanID);
-
+    void deleteMaintenance(UUID maintenanceID);
 }

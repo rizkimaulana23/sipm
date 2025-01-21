@@ -100,5 +100,12 @@ public class InfrastrukturServiceImpl implements InfrastrukturService {
         jadwalPengecekanInfrastrukturRepo.deleteJadwalPengecekanInfrastrukturById(pengecekanID);
     }
 
+    @Override
+    @Transactional
+    public void deleteMaintenance(UUID maintenanceID){
+        jadwalMaintenanceInfrastrukturRepo.deleteJadwalMaintenanceInfrastrukturById(maintenanceID);
+    }
+
+
 
 }
