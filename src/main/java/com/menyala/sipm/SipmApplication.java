@@ -17,7 +17,8 @@ public class SipmApplication {
 
 //	@Bean
 //	@Transactional
-//	CommandLineRunner run(PasarService pasarService, InfrastrukturService infrastrukturService, BarangPokokService barangPokokService, TokoService tokoService) {
+//	CommandLineRunner run(PasarService pasarService, InfrastrukturService infrastrukturService,
+//						  BarangPokokService barangPokokService, TokoService tokoService) {
 //		return args -> {
 //			for (int i = 0; i < 10; i++) {
 //
@@ -28,9 +29,9 @@ public class SipmApplication {
 //				String namaJalan = faker.address().streetName();
 //
 //				String location = Math.random() < 0.5 ? namaKota : namaJalan;
-//
 //				createPasarDTO.setNama("Pasar " + location);
-//				List<String> listKota = List.of("Jakarta Utara","Jakarta Pusat", "Jakarta Timur", "Jakarta Barat", "Jakarta Selatan");
+//				List<String> listKota = List.of("Jakarta Utara", "Jakarta Pusat", "Jakarta Timur", "Jakarta Barat",
+//						"Jakarta Selatan");
 //				Random random = new Random();
 //				createPasarDTO.setKota(listKota.get(random.nextInt(listKota.size())));
 //				createPasarDTO.setRetribusi(retributionGenerator());
@@ -41,7 +42,7 @@ public class SipmApplication {
 //
 //				for (int z = 0; z < 15; z++) { // Tambahkan 1-5 toko
 //
-//					AddTokoDTO tokoDTO  = new AddTokoDTO();
+//					AddTokoDTO tokoDTO = new AddTokoDTO();
 //					tokoDTO.setId(UUID.randomUUID());
 //					tokoDTO.setNamaToko(faker.company().name());
 //					tokoDTO.setAlamatToko(faker.address().fullAddress());
@@ -58,18 +59,18 @@ public class SipmApplication {
 //						transaksi.setPendapatanHarian(faker.number().numberBetween(1000L, 10000L));
 //						transaksi.setTanggalTransaksi(faker.date().past(14, TimeUnit.DAYS));
 //						tokoService.createTransaksi(transaksi);
-////						listTransaksi.add(transaksi);
+//						// listTransaksi.add(transaksi);
 //					}
 //
-////					for (int p = 0; p < faker.number().numberBetween(2, 5); p++) {
-////						AddBackOrderDTO backOrder = new AddBackOrderDTO();
-////						backOrder.setIdToko(toko.getId());
-////						backOrder.setIdPasar(toko.getPasar().getId());
-////						backOrder.setIdJenisBarang("beras");
-////						backOrder.setNama(faker.commerce().productName());
-////						barangPokokService.createBackOrder(backOrder);
-//////						listBackOrder.add(backOrder);
-////					}
+//					// for (int p = 0; p < faker.number().numberBetween(2, 5); p++) {
+//					// AddBackOrderDTO backOrder = new AddBackOrderDTO();
+//					// backOrder.setIdToko(toko.getId());
+//					// backOrder.setIdPasar(toko.getPasar().getId());
+//					// backOrder.setIdJenisBarang("beras");
+//					// backOrder.setNama(faker.commerce().productName());
+//					// barangPokokService.createBackOrder(backOrder);
+//					// listBackOrder.add(backOrder);
+//					// }
 //
 //					for (int m = 0; m < faker.number().numberBetween(2, 5); m++) {
 //						AddMaintenanceDTO maintenance = new AddMaintenanceDTO();
@@ -79,7 +80,7 @@ public class SipmApplication {
 //						maintenance.setPelakuMaintenance(faker.name().fullName());
 //						maintenance.setBiayaMaintenance(faker.number().numberBetween(5000L, 20000L));
 //						tokoService.addMaintenance(maintenance);
-////						listMaintenance.add(maintenance);
+//						// listMaintenance.add(maintenance);
 //					}
 //				}
 //
@@ -102,17 +103,18 @@ public class SipmApplication {
 //							barangPokok.setStok(faker.number().numberBetween(1, 100));
 //							barangPokok.setTotalPenjual(faker.number().numberBetween(1, 50));
 //							barangPokok.setTanggalMasuk(tanggalMasukCurrent);
-//							barangPokok.setTanggalKadaluwarsa(new Date(tanggalMasukCurrent.getTime() + jenisBarang.getShelfLife() * 24 * 60 * 60 * 1000L));
+//							barangPokok.setTanggalKadaluwarsa(new Date(
+//									tanggalMasukCurrent.getTime() + jenisBarang.getShelfLife() * 24 * 60 * 60 * 1000L));
 //							barangPokok.setListIdToko(tokoList);
 //							barangPokokService.create(barangPokok);
 //
 //							int totalRangeDays = 2 * jenisBarang.getShelfLife() + 1;
 //							int randomDaysOffset = random.nextInt(totalRangeDays) - jenisBarang.getShelfLife();
-//							tanggalMasukCurrent = new Date(tanggalMasukCurrent.getTime() + randomDaysOffset * 24 * 60 * 60 * 1000L);
+//							tanggalMasukCurrent = new Date(
+//									tanggalMasukCurrent.getTime() + randomDaysOffset * 24 * 60 * 60 * 1000L);
 //						}
 //					}
 //				}
-//
 //
 //				List<String> jenisInfrastruktur = infrastrukturService.getJenis();
 //				for (String jenis : jenisInfrastruktur) {
@@ -129,7 +131,7 @@ public class SipmApplication {
 //					addInfrastrukturDTO.setIdPasar(pasar.getId());
 //
 //					// Simpan infrastruktur
-//					Infrastruktur infrastruktur =  infrastrukturService.create(addInfrastrukturDTO);
+//					Infrastruktur infrastruktur = infrastrukturService.create(addInfrastrukturDTO);
 //
 //					// Tambahkan beberapa jadwal pengecekan infrastruktur
 //					for (int g = 0; g < faker.number().numberBetween(1, 3); g++) { // Misal 1-3 jadwal pengecekan
@@ -165,7 +167,7 @@ public class SipmApplication {
 		long max = 2500;
 		long step = 100;
 
-		int numberOfSteps = (int) ((max - min) / step+1);
+		int numberOfSteps = (int) ((max - min) / step + 1);
 
 		Random random = new Random();
 
@@ -173,62 +175,6 @@ public class SipmApplication {
 
 		return min + (randomIndex * step);
 	}
-
-
-
-
-//	@Bean
-//	@Transactional
-//	CommandLineRunner run(BarangPokokService barangPokokService, TokoService tokoService) {
-//		return args -> {
-//			for (int i = 0; i < 100; i++) {
-//
-//				var faker = new Faker(new Locale("in-ID"));
-//
-//				AddTokoDTO addTokoDTO = new AddTokoDTO();
-//
-//				addTokoDTO.setNamaToko("Toko "+faker.name());
-//				String namaKota = faker.address().cityName();
-//				String namaJalan = faker.address().streetName();
-//				addTokoDTO.setAlamatToko(namaJalan+" "+namaKota);
-//
-//				String generatedNik = generateNik(faker);
-//				addTokoDTO.setNikPenjual(generatedNik);
-//				addTokoDTO.setNamaPenjual(faker.name().fullName());
-//
-//				String generatedPhoneNumber = generatePhoneNumber(faker);
-//				addTokoDTO.setKontakPenjual(generatedPhoneNumber);
-//
-//				// Create the Toko and persist it using the TokoService
-//				Toko toko = tokoService.createToko(addTokoDTO);
-//
-//				// Generate a list of BarangPokok IDs to associate with this Toko
-//				// Generate a list of BarangPokok IDs to associate with this Toko
-//				List<UUID> listIdBarangPokok = new ArrayList<>();
-//				List<String> jenisBpList = barangPokokService.getJenisBp();  // Fetch the list of JenisBarang strings
-//
-//				Random random = new Random();
-//
-//				for (int j = 0; j < 5; j++) {  // Assuming each Toko has 5 linked BarangPokok items
-//					AddBarangPokokDTO addBarangPokokDTO = new AddBarangPokokDTO();
-//					addBarangPokokDTO.setNama(faker.commerce().productName());
-//					addBarangPokokDTO.setStok(faker.number().numberBetween(10, 100));
-//					addBarangPokokDTO.setTotalPenjual(faker.number().numberBetween(1, 10));
-//					addBarangPokokDTO.setTanggalKadaluwarsa(faker.date().future(365, TimeUnit.DAYS));
-//
-//
-//					String randomJenisBarang = jenisBpList.get(random.nextInt(jenisBpList.size()));
-//					addBarangPokokDTO.setIdJenisBarang(randomJenisBarang);
-//
-//					// Create and save the BarangPokok, then add its ID to the list
-//					BarangPokok barangPokok = barangPokokService.create(addBarangPokokDTO);
-//					listIdBarangPokok.add(barangPokok.getId());
-//
-//				}
-//				addTokoDTO.setListIdBarangPokok(listIdBarangPokok);
-//			}
-//		};
-//	}
 
 	public static String generateNik(Faker faker) {
 
@@ -261,6 +207,5 @@ public class SipmApplication {
 
 		return phoneNumber.toString();
 	}
-
 
 }
