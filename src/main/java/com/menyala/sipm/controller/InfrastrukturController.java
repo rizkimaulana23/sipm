@@ -2,17 +2,15 @@ package com.menyala.sipm.controller;
 
 import com.menyala.sipm.dto.infrastruktur.AddMaintenanceInfrastrukturDTO;
 import com.menyala.sipm.dto.infrastruktur.AddPengecekanInfrastrukturDTO;
+import com.menyala.sipm.dto.infrastruktur.UpdateMaintenanceInfrastrukturDTO;
+import com.menyala.sipm.dto.infrastruktur.UpdatePengecekanInfrastrukturDTO;
 import com.menyala.sipm.model.Infrastruktur;
 import com.menyala.sipm.model.JadwalMaintenanceInfrastruktur;
 import com.menyala.sipm.model.JadwalPengecekanInfrastruktur;
 import com.menyala.sipm.model.Pasar;
-import com.menyala.sipm.repository.BackOrderRepo;
-import com.menyala.sipm.repository.InfrastrukturRepo;
-import com.menyala.sipm.repository.PasarRepo;
+import com.menyala.sipm.repository.*;
 import com.menyala.sipm.service.InfrastrukturService;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +32,12 @@ public class InfrastrukturController {
 
     @Autowired
     private BackOrderRepo backOrderRepo;
+
+    @Autowired
+    private JadwalPengecekanInfrastrukturRepo jadwalPengecekanInfrastrukturRepo;
+
+    @Autowired
+    private JadwalMaintenanceInfrastrukturRepo jadwalMaintenanceInfrastrukturRepo;
 
     @Autowired
     private InfrastrukturService infrastrukturService;
@@ -143,10 +147,53 @@ public class InfrastrukturController {
         return "redirect:/infrastruktur/detail/" + id2;
     }
 
+    @GetMapping("/pengecekan/edit/{id_infrastruktur}/{id_pengecekan}")
+    public String editPengecekan(@PathVariable("id_pengecekan") UUID id_pengecekan, @PathVariable("id_infrastruktur") UUID id_infrastruktur, Model model) {
+        JadwalPengecekanInfrastruktur pengecekan = jadwalPengecekanInfrastrukturRepo.findById(id_pengecekan).get();
+        UpdatePengecekanInfrastrukturDTO dto = new UpdatePengecekanInfrastrukturDTO();
+        dto.setId(id_pengecekan);
+        dto.setInfrastrukturID(id_infrastruktur);
+        dto.setTanggal(pengecekan.getTanggal());
+        dto.setBiaya(pengecekan.getBiaya());
+        dto.setDeskripsi(pengecekan.getDeskripsi());
+        dto.setPelakuPengecekan(pengecekan.getPelakuPengecekan());
+        model.addAttribute("infrastruktur", pengecekan.getInfrastruktur());
+        model.addAttribute("pasar", pengecekan.getInfrastruktur().getPasar());
+        model.addAttribute("dto", dto);
+        return "infrastruktur/edit-pengecekan";
+    }
+
+    @PostMapping("/pengecekan/edit/{id_infrastruktur}/{id_pengecekan}")
+    public String editPengecekan(@PathVariable("id_infrastruktur") UUID id, @ModelAttribute UpdatePengecekanInfrastrukturDTO dto) {
+        infrastrukturService.updatePengecekan(dto);
+        return "redirect:/infrastruktur/detail/" + id;
+    }
+
     @PostMapping("/maintenance/delete/{id1}/{id2}")
     public String deleteMaintenance(@PathVariable UUID id2, @PathVariable UUID id1) {
         infrastrukturService.deleteMaintenance(id1);
         return "redirect:/infrastruktur/detail/" + id2;
     }
 
+    @GetMapping("/maintenance/edit/{id_infrastruktur}/{id_maintenance}")
+    public String editMaintenance(@PathVariable("id_maintenance") UUID id_maintenance,@PathVariable("id_infrastruktur") UUID id_infrastruktur , Model model) {
+        JadwalMaintenanceInfrastruktur maintenance = jadwalMaintenanceInfrastrukturRepo.findById(id_maintenance).get();
+        UpdateMaintenanceInfrastrukturDTO dto = new UpdateMaintenanceInfrastrukturDTO();
+        dto.setId(id_maintenance);
+        dto.setInfrastrukturID(id_infrastruktur);
+        dto.setTanggal(maintenance.getTanggalMaintenance());
+        dto.setDeskripsi(maintenance.getDeskripsi());
+        dto.setPelakuMaintenance(maintenance.getPelakuMaintenance());
+        dto.setBiaya(maintenance.getBiaya());
+        model.addAttribute("infrastruktur", maintenance.getInfrastruktur());
+        model.addAttribute("pasar", maintenance.getInfrastruktur().getPasar());
+        model.addAttribute("dto", dto);
+        return "infrastruktur/edit-maintenance";
+    }
+
+    @PostMapping("/maintenance/edit/{id_infrastruktur}/{id_pengecekan}")
+    public String editMaintenance(@ModelAttribute UpdateMaintenanceInfrastrukturDTO dto) {
+        infrastrukturService.updateMaintenance(dto);
+        return "redirect:/infrastruktur/detail/" + dto.getInfrastrukturID();
+    }
 }

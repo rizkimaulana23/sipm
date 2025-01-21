@@ -136,12 +136,11 @@ public class SipmApplication {
 //					// Tambahkan beberapa jadwal pengecekan infrastruktur
 //					for (int g = 0; g < faker.number().numberBetween(1, 3); g++) { // Misal 1-3 jadwal pengecekan
 //						AddPengecekanInfrastrukturDTO pengecekanDTO = new AddPengecekanInfrastrukturDTO();
-//						pengecekanDTO.setInfrastrukturID(infrastruktur.getId()); // Ambil ID infrastruktur
-//						pengecekanDTO.setTanggal(faker.date().between(fromDate, toDate)); // Tanggal acak
-//						pengecekanDTO.setBiaya(faker.number().numberBetween(1000L, 5000L)); // Biaya acak
-//						pengecekanDTO.setPelakuPengecekan(faker.name().fullName()); // Nama pelaku pengecekan
-//						pengecekanDTO.setDeskripsi(faker.lorem().sentence());
-//						var cek =  infrastrukturService.addPengecekan(pengecekanDTO);
+//						pengecekanDTO.setInfrastrukturID(infrastruktur.getId());// Ambil ID infrastruktur
+//						pengecekanDTO.setTanggal(faker.date().between(fromDate, toDate));// Tanggal acak
+//						pengecekanDTO.setBiaya(faker.number().numberBetween(1000L, 5000L));// Biaya acak
+//						pengecekanDTO.setPelakuPengecekan(faker.name().fullName());// Nama pelaku pengecekan
+//						var cek = infrastrukturService.addPengecekan(pengecekanDTO);
 //						log.info("KONTOL");
 //						log.info(cek.getInfrastruktur().getId().toString());
 //					}
