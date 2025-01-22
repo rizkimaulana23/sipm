@@ -28,6 +28,7 @@
         </div>
     </div>
 </div>
+
 <div class="container my-4">
     <div class="card">
         <div class="card-body">
@@ -58,12 +59,16 @@
     </div>
 </div>
 
+
+
 <div class="container my-4">
     <div class="card">
         <form th:action="@{|/infrastruktur/detail/${infrastruktur.id}/input-pengecekan|}" method="POST" th:object="${dto}">
+
             <div class="card-body">
                 <div class="card-title h5">Input Pengecekan</div>
                 <input type="text" class="form-control" th:field="*{infrastrukturID}" style="display: none">
+
 
                 <div class="my-1">
                     <label for="tanggal">Tanggal</label>
@@ -87,6 +92,7 @@
 
                 <button type="submit" class="btn btn-primary container mt-1">Kirim</button>
             </div>
+
         </form>
     </div>
 </div>

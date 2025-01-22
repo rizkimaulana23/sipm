@@ -7,10 +7,15 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Detail Toko</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
     <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.css">
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+
     <style>
         .table th {
             width: 10%;
@@ -92,8 +97,101 @@
     <div class="card">
         <div class="card-body">
             <div th:each="data, iter : ${mapBarangPokok}" class="container my-1" th:attr="id=${'section-' + data.key}">
-                <span class="h5" th:text="${data.key}"></span>
-                <table class="table text-center align-middle"  style="table-layout: fixed;">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+
+                    <span class="h5" th:text="${data.key}"></span>
+
+
+                    <!-- Button trigger modal -->
+                    <button
+                            type="button"
+                            class="btn btn-primary"
+                            data-bs-toggle="modal"
+                            data-bs-target="#exampleModalCenter"
+                    >
+                        input stok
+                    </button>
+
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <!-- Header -->
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalCenterTitle">Input Barang</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+
+                                <!-- Body -->
+                                <div class="modal-body">
+
+
+                                    <div class="mb-3">
+                                        <label for="productJenis" class="form-label">Id Toko</label>
+                                        <div class="form-control" id="idToko" name="idToko" th:text="${toko.getId()}"></div>
+                                    </div>
+                                    <!-- Form -->
+                                    <form th:action="@{|/stok/toko/${toko.getId()}/input-stok}" method="post" th:object="${dto}">
+                                        <!-- Jenis -->
+                                        <div class="mb-3">
+                                            <label for="productJenis" class="form-label">jenis barang</label>
+                                            <input type="text" class="form-control" id="productJenis" name="idToko"
+                                                   field="*{idJenisBarang}">
+                                        </div>
+
+
+                                        <!-- Nama -->
+                                        <div class="mb-3">
+                                            <label for="productName" class="form-label">Nama Barang</label>
+                                            <input type="text" class="form-control"  name="nama" field="*{nama}" id="productName">
+                                        </div>
+
+                                        <!-- Stok -->
+                                        <div class="mb-3">
+                                            <label for="productStock" class="form-label">Stok</label>
+                                            <input type="number" class="form-control" id="productStock" name="stok"
+                                                   field="*{stok}"
+                                                   placeholder="Masukkan jumlah stok"
+                                                   required>
+                                        </div>
+
+                                        <!-- Tanggal Kadaluarsa -->
+                                        <div class="mb-3">
+                                            <label for="expiryDate" class="form-label">Tanggal Kadaluarsa</label>
+                                            <input type="date" class="form-control" id="expiryDate" name="tanggalKadaluwarsa"
+                                                   field="*{#dates.format(tanggalKadaluwarsa, 'yyyy-MM-dd')}"
+                                                   required>
+                                        </div>
+
+                                        <!-- Tanggal Masuk -->
+                                        <div class="mb-3">
+                                            <label for="entryDate" class="form-label">Tanggal Masuk</label>
+                                            <input type="date" class="form-control" id="entryDate" name="tanggalMasuk"
+                                                   field="*{#dates.format(tanggalMasuk, 'yyyy-MM-dd')}"
+                                                   required>
+                                        </div>
+
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary" form="exampleModalCenter" th:action>Save Changes</button>
+
+                                    </form>
+
+                                </div>
+
+                                <!-- Footer -->
+                                <div class="modal-footer">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+
+                <table class="table text-center align-middle" style="table-layout: fixed;">
                     <thead>
                     <tr>
                         <th>No</th>

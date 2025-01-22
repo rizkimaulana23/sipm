@@ -1,6 +1,10 @@
 package com.menyala.sipm.controller;
 
+import com.menyala.sipm.dto.BarangPokok.AddBarangPokokDTO;
+import com.menyala.sipm.dto.BarangPokok.AddStokDTO;
+import com.menyala.sipm.dto.infrastruktur.AddMaintenanceInfrastrukturDTO;
 import com.menyala.sipm.model.BarangPokok;
+import com.menyala.sipm.model.Infrastruktur;
 import com.menyala.sipm.model.Pasar;
 import com.menyala.sipm.model.Toko;
 import com.menyala.sipm.repository.PasarRepo;
@@ -11,9 +15,7 @@ import com.menyala.sipm.service.StokService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -97,5 +99,36 @@ public class StokController {
         model.addAttribute("listJenisBarang", listJenisBarang);
         model.addAttribute("mapBarangPokok", mapBarangPokok);
         return "stok/stok-detail-toko";
+    }
+
+    @GetMapping("/toko/{id}/input-stok")
+    public String inputStok(Model model, @PathVariable("id") UUID id) {
+
+        Toko toko = tokoRepo.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Toko dengan ID " + id + " tidak ditemukan"));
+        Pasar pasar = pasarRepo.findById(toko.getPasar().getId())
+                .orElseThrow(() -> new IllegalArgumentException("Pasar terkait tidak ditemukan"));
+
+        AddStokDTO barangdto = new AddStokDTO();
+        barangdto.setIdToko(id);
+
+        model.addAttribute("pasar", pasar);
+        model.addAttribute("toko", toko);
+        model.addAttribute("dto", barangdto);
+
+        return "stok/stok-detail-toko";
+    }
+
+    @PostMapping("/toko/{id}/input-stok")
+    public String inputStok(@PathVariable("id") UUID id, @ModelAttribute AddBarangPokokDTO dto) {
+        if (dto.getNama() == null || dto.getNama().isEmpty()) {
+            throw new IllegalArgumentException("Nama barang pokok tidak boleh kosong");
+        }
+
+        if (dto.getListIdToko() == null || !dto.getListIdToko().contains(id)) {
+            dto.setListIdToko(List.of(id));
+        }
+        barangPokokService.create(dto);
+        return "redirect:/stok/toko/" + id;
     }
 }
